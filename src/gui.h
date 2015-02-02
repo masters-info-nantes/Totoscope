@@ -15,6 +15,7 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QList>
+#include <QVideoProbe>
 
 namespace Ui {
 class Gui;
@@ -25,8 +26,14 @@ class Gui : public QWidget
 {
     Q_OBJECT
 
+    QList<QVideoFrame>* list;
+    int index;
+    int framerate;
     bool mouseDown;
     QList<QPoint*>* drawings;
+    QImage* image;
+    QPoint prev_pos;
+
 public:
     explicit Gui(QWidget *parent = 0);
     ~Gui();
@@ -34,6 +41,8 @@ public:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+public slots:
+    void processFrame(QVideoFrame);
 private:
     Ui::Gui *ui;
 };
