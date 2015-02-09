@@ -13,8 +13,16 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        gui.cpp
+        gui.cpp \
+    videodecomposer.cpp \
+    controller.cpp \
+    drawingzone.cpp \
+    splashgui.cpp
 
-HEADERS  += gui.h
+HEADERS  += gui.h \
+    videodecomposer.h \
+    controller.h \
+    drawingzone.h \
+    splashgui.h
 
 FORMS    += gui.ui
