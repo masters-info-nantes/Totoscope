@@ -1,2 +1,4 @@
 bin/*
-*.pro.user
+*.pro.user*
+*.o
+moc_*

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia multimediawidgets
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,12 +17,14 @@ SOURCES += main.cpp\
     videodecomposer.cpp \
     controller.cpp \
     drawingzone.cpp \
-    splashgui.cpp
+    splashgui.cpp \
+    newprojectgui.cpp
 
 HEADERS  += gui.h \
     videodecomposer.h \
     controller.h \
     drawingzone.h \
-    splashgui.h
+    splashgui.h \
+    newprojectgui.h
 
 FORMS    += gui.ui

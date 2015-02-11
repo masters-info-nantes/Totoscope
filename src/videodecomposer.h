@@ -5,7 +5,6 @@
 #include <QString>
 #include <QList>
 #include <QFile>
-#include <QFileDevice>
 #include <QFileInfo>
 #include <QProcess>
 #include <QUrl>

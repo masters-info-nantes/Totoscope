@@ -2,7 +2,7 @@
 
 Controller::Controller()
 {
-    this->decomposer = new VideoDecomposer("Generique.mpeg",8);
+    this->decomposer = new VideoDecomposer("Generique.MOV",8);
     //decomposer->startProcessing();
 
 }

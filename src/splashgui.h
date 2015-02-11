@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QGridLayout>
+#include <QFileDialog>
+#include <newprojectgui.h>
 
 class SplashGui : public QWidget
 {
@@ -21,6 +23,8 @@ public:
 signals:
 
 public slots:
+    void windowfile();
+    void createproject();
 
 };
 

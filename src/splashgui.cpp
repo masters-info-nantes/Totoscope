@@ -16,4 +16,20 @@ SplashGui::SplashGui() :
     this->layout->addWidget(this->newProject,2,0);
     this->layout->addWidget(this->openProject,2,1);
     this->layout->addWidget(this->quit,2,2);
+    QObject::connect(this->openProject,SIGNAL(clicked()),this,SLOT(windowfile()));
+    QObject::connect(this->newProject,SIGNAL(clicked()),this,SLOT(createproject()));
+}
+
+void SplashGui::windowfile()
+{
+    QFileDialog*  file= new QFileDialog();
+    QString project = file->getOpenFileName(this,"Open Project", "/","Totoscope Project (*.tts)");
+
+}
+
+void SplashGui::createproject()
+{
+    this->close();
+    NewProjectGui* win = new NewProjectGui();
+    win->show();
 }
