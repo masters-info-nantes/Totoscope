@@ -34,7 +34,7 @@ NewProjectGui::~NewProjectGui()
 void NewProjectGui::chooseVideo()
 {
     QFileDialog* dialog = new QFileDialog();
-    videoEdit->setText(dialog->getOpenFileName(this,"Open Video", "/","All files (*.*)"));
+    videoEdit->setText(dialog->getOpenFileName(this,"Open Video", "/home/","All files (*.*)"));
 }
 
 void NewProjectGui::createProject()

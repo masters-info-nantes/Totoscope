@@ -12,14 +12,19 @@ DrawingZone::~DrawingZone()
     this->painter->end();
 }
 
-void DrawingZone::paintEvent(QPaintEvent *event)
+void DrawingZone::setPenSize(int i)
 {
-    this->painter = new QPainter(this);
-    painter->setPen(Qt::white);
-    painter->drawImage(0,0,*(this->image));
+    pen.setWidth(i);
 }
 
-
+void DrawingZone::paintEvent(QPaintEvent *event)
+{
+    pen.setColor(Qt::white);
+    //pen.setWidth(1);
+    this->painter = new QPainter(this);
+        painter->setPen(pen);
+        painter->drawImage(0,0,*(this->image));
+}
 
 void DrawingZone::mousePressEvent(QMouseEvent *event)
 {
