@@ -75,15 +75,34 @@ Gui::Gui(QWidget *parent) :
         QAction *nextAct = new QAction(this);
             nextAct = editMenu->addAction("Next");
             nextAct->setShortcut(QKeySequence(Qt::Key_Right));
+
         QMenu *helpMenu = new QMenu;
         helpMenu = menuBar->addMenu(tr("&Aide"));
         QAction *aboutAct = new QAction(this);
             aboutAct = helpMenu->addAction("A Propos");
 
     //////////////////////////////
+    /// Barre horizontale haut ///
+    //////////////////////////////
+    QToolBar *topBar = new QToolBar(this);
+        QAction *stopButton = new QAction(this);
+            stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
+        QAction *playButton = new QAction(this);
+            playButton = topBar->addAction(QIcon("../src/pictures/play.png"),"Play");
+        QAction *nextButton = new QAction(this);
+            nextButton = topBar->addAction(QIcon("../src/pictures/next.png"),"Next");
+        topBar->addSeparator();
+        QAction *oignonButton = new QAction(this);
+            QCheckBox *oignonCheck = new QCheckBox("Pelures d'Oignon");
+            oignonButton = topBar->addWidget(oignonCheck);
+        QAction *vidButton = new QAction(this);
+            QCheckBox *vidCheck = new QCheckBox("Vidéo");
+            vidButton = topBar->addWidget(vidCheck);
+
+    //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
-    QPushButton *penButton = new QPushButton;
+    /*QPushButton *penButton = new QPushButton;
         penButton->setIcon(QIcon("../src/pictures/pen.png"));
         penButton->setIconSize(QSize(32,32));
     QSpinBox *sizePen = new QSpinBox;
@@ -103,14 +122,30 @@ Gui::Gui(QWidget *parent) :
         vbox->addWidget(eraserButton);
         vbox->addWidget(colorButton);
         vbox->addWidget(backButton);
-
+    */
+    QToolBar *leftBar = new QToolBar(this);
+        leftBar->setOrientation(Qt::Vertical);
+        QAction *penButton = new QAction(this);
+            penButton = leftBar->addAction(QIcon("../src/pictures/pen.png"),"Crayon");
+        QAction *sizeButton = new QAction(this);
+            QSpinBox *sizePen = new QSpinBox;
+            sizePen->setRange(1,50);
+            sizeButton = leftBar->addWidget(sizePen);
+        QAction *eraserButton = new QAction(this);
+            eraserButton = leftBar->addAction(QIcon("../src/pictures/eraser.png"),"Gomme");
+        this->colorButton = new QAction(this);
+            colorButton = leftBar->addAction("Couleur");
+        QAction *backButton = new QAction(this);
+            backButton = leftBar->addAction(QIcon("../src/pictures/back.png"),"Annuler");
 
     /////////////////////////
     /// Drawing management //
     /////////////////////////
     this->setLayout(layout);
-    layout->addWidget(menuBar,0,0);
-    layout->addLayout(vbox,1,0);
+    layout->addWidget(menuBar);
+    layout->addWidget(topBar,0,1);
+    //layout->addLayout(vbox,1,0);
+    layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1);
     container->setLayout(stack);
     QLabel* frameWidget = new QLabel();

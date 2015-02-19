@@ -7,9 +7,11 @@
 #include <QStackedLayout>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QCheckBox>
 #include <QColorDialog>
 #include <QLabel>
 #include <QMenuBar>
+#include <QToolBar>
 #include <QAction>
 
 #include <controller.h>
@@ -25,7 +27,8 @@ class Gui : public QWidget
     Q_OBJECT
     Controller* controller;
     DrawingZone* drawingZone;
-    QPushButton* colorButton;
+    //QPushButton* colorButton;
+    QAction* colorButton;
     QColorDialog* colorPalette;
 
 public:
