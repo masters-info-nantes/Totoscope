@@ -38,10 +38,26 @@ class Gui : public QWidget
         ~Gui();
 
     public slots:
-        void showPicker();
+        void draw();
         void setPenSize(int);
+        void erase();
+        void showPicker();
+        void undo();
+        void redo();
+        void newProject();
+        void openProject();
+        void save();
+        void saveAs();
+        void imgExport();
+        void vidExport();
+        void closeProject();
+        void stop();
         void playDraw();
         void pauseDraw();
+        void playPause();
+        void next();
+        void pelures();
+        void video();
 
     private:
         Ui::Gui *ui;
