@@ -27,21 +27,24 @@ class Gui : public QWidget
     Q_OBJECT
     Controller* controller;
     DrawingZone* drawingZone;
-    //QPushButton* colorButton;
+    QAction* playButton;
+    QAction* pauseButton;
     QAction* colorButton;
     QColorDialog* colorPalette;
 
-public:
-    explicit Gui(QWidget *parent = 0);
-    ~Gui();
 
-public slots:
-    void showPicker();
+    public:
+        explicit Gui(QWidget *parent = 0);
+        ~Gui();
 
-private:
-    Ui::Gui *ui;
+    public slots:
+        void showPicker();
+        void setPenSize(int);
+        void playDraw();
+        void pauseDraw();
 
-    QMenu* fileMenu;
+    private:
+        Ui::Gui *ui;
 };
 
 #endif // GUI_H

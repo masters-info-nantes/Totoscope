@@ -12,7 +12,6 @@ Gui::Gui(QWidget *parent) :
     QStackedLayout* stack = new QStackedLayout();
     QWidget* container = new QWidget();
     this->drawingZone = new DrawingZone();
-    //int i;
 
     ////////////////////////////
     /// Barre Menu principal ///
@@ -87,14 +86,23 @@ Gui::Gui(QWidget *parent) :
     QToolBar *topBar = new QToolBar(this);
         QAction *stopButton = new QAction(this);
             stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
-        QAction *playButton = new QAction(this);
+        this->playButton = new QAction(this);
             playButton = topBar->addAction(QIcon("../src/pictures/play.png"),"Play");
+            QObject::connect(playButton, SIGNAL(triggered()), this, SLOT(playDraw()));
+        this->pauseButton = new QAction(this);
+            pauseButton = topBar->addAction(QIcon("../src/pictures/pause.png"),"Pause");
+            pauseButton->setVisible(false);
+            QObject::connect(pauseButton, SIGNAL(triggered()), this, SLOT(pauseDraw()));
         QAction *nextButton = new QAction(this);
             nextButton = topBar->addAction(QIcon("../src/pictures/next.png"),"Next");
         topBar->addSeparator();
         QAction *oignonButton = new QAction(this);
             QCheckBox *oignonCheck = new QCheckBox("Pelures d'Oignon");
             oignonButton = topBar->addWidget(oignonCheck);
+        QAction *nbOignon = new QAction(this);
+            QSpinBox *oignonSpin = new QSpinBox;
+                oignonSpin->setRange(1,5);
+            nbOignon = topBar->addWidget(oignonSpin);
         QAction *vidButton = new QAction(this);
             QCheckBox *vidCheck = new QCheckBox("Vidéo");
             vidButton = topBar->addWidget(vidCheck);
@@ -102,27 +110,6 @@ Gui::Gui(QWidget *parent) :
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
-    /*QPushButton *penButton = new QPushButton;
-        penButton->setIcon(QIcon("../src/pictures/pen.png"));
-        penButton->setIconSize(QSize(32,32));
-    QSpinBox *sizePen = new QSpinBox;
-        sizePen->setRange(1,50);
-        //QObject::connect(sizePen, SIGNAL(valueChanged(i)), this, SLOT(setPenSize(i)));
-    QPushButton *eraserButton = new QPushButton;
-        eraserButton->setIcon(QIcon("../src/pictures/eraser.png"));
-        eraserButton->setIconSize(QSize(32,32));
-    this->colorButton = new QPushButton;
-        QObject::connect(colorButton, SIGNAL(clicked()), this, SLOT(showPicker()));
-    QPushButton *backButton = new QPushButton;
-        backButton->setIcon(QIcon("../src/pictures/back.png"));
-        backButton->setIconSize(QSize(32,32));
-    QVBoxLayout *vbox = new QVBoxLayout;
-        vbox->addWidget(penButton);
-        vbox->addWidget(sizePen);
-        vbox->addWidget(eraserButton);
-        vbox->addWidget(colorButton);
-        vbox->addWidget(backButton);
-    */
     QToolBar *leftBar = new QToolBar(this);
         leftBar->setOrientation(Qt::Vertical);
         QAction *penButton = new QAction(this);
@@ -131,10 +118,12 @@ Gui::Gui(QWidget *parent) :
             QSpinBox *sizePen = new QSpinBox;
             sizePen->setRange(1,50);
             sizeButton = leftBar->addWidget(sizePen);
+            QObject::connect(sizePen, SIGNAL(valueChanged(int)), this, SLOT(setPenSize(int)));
         QAction *eraserButton = new QAction(this);
             eraserButton = leftBar->addAction(QIcon("../src/pictures/eraser.png"),"Gomme");
         this->colorButton = new QAction(this);
             colorButton = leftBar->addAction("Couleur");
+            QObject::connect(colorButton, SIGNAL(triggered()), this, SLOT(showPicker()));
         QAction *backButton = new QAction(this);
             backButton = leftBar->addAction(QIcon("../src/pictures/back.png"),"Annuler");
 
@@ -143,8 +132,7 @@ Gui::Gui(QWidget *parent) :
     /////////////////////////
     this->setLayout(layout);
     layout->addWidget(menuBar);
-    layout->addWidget(topBar,0,1);
-    //layout->addLayout(vbox,1,0);
+    layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1);
     container->setLayout(stack);
@@ -165,6 +153,25 @@ void Gui::showPicker()
     pixmap.fill(color);
     colorButton->setIcon(QIcon(pixmap));
 
+}
+
+void Gui::setPenSize(int i)
+{
+    drawingZone->setPenSize(i);
+}
+
+void Gui::playDraw()
+{
+    //TODO jouer les dessins
+    playButton->setVisible(false);
+    pauseButton->setVisible(true);
+}
+
+void Gui::pauseDraw()
+{
+    //TODO pause sur la lecture des dessins
+    playButton->setVisible(true);
+    pauseButton->setVisible(false);
 }
 
 Gui::~Gui()

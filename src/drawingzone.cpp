@@ -20,7 +20,6 @@ void DrawingZone::setPenSize(int i)
 void DrawingZone::paintEvent(QPaintEvent *event)
 {
     pen.setColor(Qt::white);
-    //pen.setWidth(1);
     this->painter = new QPainter(this);
         painter->setPen(pen);
         painter->drawImage(0,0,*(this->image));

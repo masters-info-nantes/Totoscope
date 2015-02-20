@@ -17,16 +17,13 @@ class DrawingZone : public QWidget
     QImage* image;
 public:
     explicit DrawingZone();
-    //void setPenSize(int);
+    void setPenSize(int);
     ~DrawingZone();
-signals:
-
 public slots:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
-    void setPenSize(int);
 };
 
 #endif // DRAWINGZONE_H
