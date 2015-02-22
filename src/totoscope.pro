@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     controller.cpp \
     drawingzone.cpp \
     splashgui.cpp \
-    newprojectgui.cpp
+    newprojectgui.cpp \
+    project.cpp
 
 HEADERS  += gui.h \
     videodecomposer.h \
     controller.h \
     drawingzone.h \
     splashgui.h \
-    newprojectgui.h
+    newprojectgui.h \
+    project.h
 
 FORMS    += gui.ui

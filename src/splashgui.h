@@ -10,6 +10,7 @@
 
 class SplashGui : public QWidget
 {
+    Controller* controller;
     QGridLayout* layout;
     QLabel* title;
     QLabel* description;
@@ -18,7 +19,7 @@ class SplashGui : public QWidget
     QPushButton* quit;
     Q_OBJECT
 public:
-    explicit SplashGui();
+    explicit SplashGui(Controller*);
 
 signals:
 

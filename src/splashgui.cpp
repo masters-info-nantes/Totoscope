@@ -1,7 +1,7 @@
 #include "splashgui.h"
 
-SplashGui::SplashGui() :
-    QWidget(0)
+SplashGui::SplashGui(Controller* aController) :
+    QWidget(0),controller(aController)
 {
     this->setFixedSize(600,400);
     this->layout= new QGridLayout();
@@ -23,13 +23,20 @@ SplashGui::SplashGui() :
 void SplashGui::windowfile()
 {
     QFileDialog*  file= new QFileDialog();
-    QString project = file->getOpenFileName(this,"Open Project", "/","Totoscope Project (*.tts)");
+    QString project = file->getOpenFileName(this,"Open Project", "/","");
+    if(project!="")
+    {
+        this->controller->openProject(project);
+        this->close();
+        Gui* win = new Gui(this->controller);
+        win->show();
+    }
 
 }
 
 void SplashGui::createproject()
 {
     this->close();
-    NewProjectGui* win = new NewProjectGui();
+    NewProjectGui* win = new NewProjectGui(this->controller);
     win->show();
 }

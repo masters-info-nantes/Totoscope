@@ -1,13 +1,11 @@
 #include "gui.h"
 #include "ui_gui.h"
 
-Gui::Gui(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Gui)
+Gui::Gui(Controller* aController) :
+    QWidget(0),controller(aController), ui(new Ui::Gui)
 {
     this->setFixedSize(800,600);
     ui->setupUi(this);
-    this->controller = new Controller();
     QGridLayout* layout = new QGridLayout();
     QStackedLayout* stack = new QStackedLayout();
     QWidget* container = new QWidget();
@@ -31,7 +29,8 @@ Gui::Gui(QWidget *parent) :
         QAction *saveAct = new QAction(this);
             saveAct = fileMenu->addAction("Enregistrer");
             saveAct->setShortcut(QKeySequence::Save);
-            QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+            QObject::connect(saveAct,SIGNAL(triggered()),this->controller,SLOT(saveProject()));
+            //QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
         QAction *saveAsAct = new QAction(this);
             saveAsAct = fileMenu->addAction("Enregistrer sous");
             saveAsAct->setShortcut(QKeySequence::SaveAs);

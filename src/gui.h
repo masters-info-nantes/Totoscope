@@ -34,7 +34,7 @@ class Gui : public QWidget
 
 
     public:
-        explicit Gui(QWidget *parent = 0);
+        explicit Gui(Controller*);
         ~Gui();
 
     public slots:

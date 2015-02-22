@@ -1,10 +1,12 @@
 #include "newprojectgui.h"
 
-NewProjectGui::NewProjectGui(QWidget *parent) : QWidget(parent)
+NewProjectGui::NewProjectGui(Controller* aController) :
+    QWidget(0),controller(aController)
 {
     layout = new QGridLayout();
     nameEdit = new QLineEdit();
     nameEdit->setMinimumWidth(400);
+    error = new QLabel();
     videoButton = new QPushButton("Browse");
     QObject::connect(videoButton,SIGNAL(clicked()),this,SLOT(chooseVideo()));
     selectFramerate = new QComboBox();
@@ -22,7 +24,8 @@ NewProjectGui::NewProjectGui(QWidget *parent) : QWidget(parent)
     this->layout->addWidget(videoButton,3,1);
     this->layout->addWidget(new QLabel("FrameRate:"),4,0);
     this->layout->addWidget(selectFramerate,5,0);
-    this->layout->addWidget(createButton,6,2);
+    this->layout->addWidget(error,6,0,1,2);
+    this->layout->addWidget(createButton,7,2);
     this->setLayout(layout);
 }
 
@@ -39,7 +42,16 @@ void NewProjectGui::chooseVideo()
 
 void NewProjectGui::createProject()
 {
-    Gui* window = new Gui();
-    window->show();
-    this->close();
+    QFile* check = new QFile(this->videoEdit->text());
+    if(this->nameEdit->text()=="")
+        this->error->setText("Votre projet doit avoir un nom!");
+    else if(!check->exists())
+        this->error->setText("Le fichier n'existe pas!");
+    else
+    {
+        this->controller->createProject(this->nameEdit->text(),this->videoEdit->text(),this->selectFramerate->currentText().toInt());
+        Gui* window = new Gui(this->controller);
+        window->show();
+        this->close();
+    }
 }
