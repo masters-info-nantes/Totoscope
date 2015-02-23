@@ -199,7 +199,8 @@ Gui::Gui(Controller* aController) :
     QTimer* timer = new QTimer();
     timer->setInterval(500);
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
-    timer->start();
+    QObject::connect(playButton, SIGNAL(triggered()), timer, SLOT(start()));
+    QObject::connect(pauseButton, SIGNAL(triggered()), timer, SLOT(stop()));
 }
 
 void Gui::draw()
