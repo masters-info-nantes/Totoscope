@@ -188,11 +188,6 @@ void Gui::showPicker()
     colorPalette->setModal(true);
     QObject::connect(colorPalette, SIGNAL(colorSelected(QColor)), this, SLOT(changeColor(QColor)));
     colorPalette->open();
-    //QColor color =  colorPalette->selectedColor();
-    //QPixmap pixmap(65,65);
-    //pixmap.fill(color);
-    //colorButton->setIcon(QIcon(pixmap));
-
 }
 
 void Gui::changeColor(QColor newcolor)
