@@ -13,14 +13,16 @@
 class NewProjectGui : public QWidget
 {
     Q_OBJECT
+    Controller* controller;
     QGridLayout* layout;
+    QLabel* error;
     QLineEdit* nameEdit;
     QPushButton* videoButton;
     QComboBox* selectFramerate;
     QLineEdit* videoEdit;
     QPushButton* createButton;
 public:
-    explicit NewProjectGui(QWidget *parent = 0);
+    explicit NewProjectGui(Controller* controller);
     ~NewProjectGui();
 
 signals:

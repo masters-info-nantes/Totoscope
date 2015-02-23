@@ -1,13 +1,11 @@
 #include "gui.h"
 #include "ui_gui.h"
 
-Gui::Gui(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Gui)
+Gui::Gui(Controller* aController) :
+    QWidget(0),controller(aController), ui(new Ui::Gui)
 {
     this->setFixedSize(800,600);
     ui->setupUi(this);
-    this->controller = new Controller();
     QGridLayout* layout = new QGridLayout();
     QStackedLayout* stack = new QStackedLayout();
     QWidget* container = new QWidget();
@@ -31,7 +29,8 @@ Gui::Gui(QWidget *parent) :
         QAction *saveAct = new QAction(this);
             saveAct = fileMenu->addAction("Enregistrer");
             saveAct->setShortcut(QKeySequence::Save);
-            QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+            QObject::connect(saveAct,SIGNAL(triggered()),this->controller,SLOT(saveProject()));
+            //QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
         QAction *saveAsAct = new QAction(this);
             saveAsAct = fileMenu->addAction("Enregistrer sous");
             saveAsAct->setShortcut(QKeySequence::SaveAs);
@@ -144,8 +143,9 @@ Gui::Gui(QWidget *parent) :
             eraserButton = leftBar->addAction(QIcon("../src/pictures/eraser.png"),"Gomme");
             QObject::connect(eraserButton, SIGNAL(triggered()), this, SLOT(erase()));
         this->colorButton = new QAction(this);
-            colorButton = leftBar->addAction("Couleur");
-            QObject::connect(colorButton, SIGNAL(triggered()), this, SLOT(showPicker()));
+            colButton = new QPushButton;
+            colorButton = leftBar->addWidget(colButton);
+            QObject::connect(colButton, SIGNAL(clicked()), this, SLOT(showPicker()));
         QAction *backButton = new QAction(this);
             backButton = leftBar->addAction(QIcon("../src/pictures/back.png"),"Annuler");
             QObject::connect(backButton, SIGNAL(triggered()), this, SLOT(undo()));
@@ -157,7 +157,7 @@ Gui::Gui(QWidget *parent) :
     layout->addWidget(menuBar);
     layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
-    layout->addWidget(container,1,1);
+    layout->addWidget(container,1,1,1,3);
     container->setLayout(stack);
     QLabel* frameWidget = new QLabel();
     frameWidget->setPixmap(QPixmap("videofolder/videoframe29.jpg"));
@@ -185,12 +185,20 @@ void Gui::erase()
 void Gui::showPicker()
 {
     this->colorPalette = new QColorDialog();
-    colorPalette->show();
-    QColor color =  colorPalette->selectedColor();
-    QPixmap pixmap(65,65);
-    pixmap.fill(color);
-    colorButton->setIcon(QIcon(pixmap));
+    colorPalette->setModal(true);
+    QObject::connect(colorPalette, SIGNAL(colorSelected(QColor)), this, SLOT(changeColor(QColor)));
+    colorPalette->open();
+    //QColor color =  colorPalette->selectedColor();
+    //QPixmap pixmap(65,65);
+    //pixmap.fill(color);
+    //colorButton->setIcon(QIcon(pixmap));
 
+}
+
+void Gui::changeColor(QColor newcolor)
+{
+    colButton->setStyleSheet("background-color:"+newcolor.name()+";");
+    drawingZone->setPenColor(newcolor);
 }
 
 void Gui::undo()
@@ -226,11 +234,15 @@ void Gui::saveAs()
 void Gui::imgExport()
 {
     //TODO
+    ExportGui *exportWin = new ExportGui(0);
+    exportWin->show();
 }
 
 void Gui::vidExport()
 {
     //TODO
+    ExportGui *exportWin = new ExportGui(1);
+    exportWin->show();
 }
 
 void Gui::closeProject()

@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     drawingzone.cpp \
     splashgui.cpp \
     newprojectgui.cpp \
-    exportgui.cpp
+    exportgui.cpp \
+    project.cpp
 
 HEADERS  += gui.h \
     videodecomposer.h \
@@ -27,7 +28,7 @@ HEADERS  += gui.h \
     drawingzone.h \
     splashgui.h \
     newprojectgui.h \
-    ../exportgui.h \
-    exportgui.h
+    exportgui.h \
+    project.h
 
 FORMS    += gui.ui

@@ -2,3 +2,4 @@ bin/*
 *.pro.user*
 *.o
 moc_*
+*.xml

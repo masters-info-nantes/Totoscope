@@ -17,9 +17,13 @@ void DrawingZone::setPenSize(int i)
     pen.setWidth(i);
 }
 
+void DrawingZone::setPenColor(QColor color)
+{
+    pen.setColor(color);
+}
+
 void DrawingZone::paintEvent(QPaintEvent *event)
 {
-    pen.setColor(Qt::white);
     this->painter = new QPainter(this);
         painter->setPen(pen);
         painter->drawImage(0,0,*(this->image));
@@ -41,9 +45,8 @@ void DrawingZone::mouseMoveEvent(QMouseEvent *event)
    if(this->mouseDown&&this->prev_pos.x()!=-666&&this->prev_pos.y()!=-666)
     {
         QPainter painter(this->image);
-        painter.setPen(Qt::white);
+        painter.setPen(pen);
         painter.drawLine(this->prev_pos,event->pos());
-        //painter.drawEllipse(event->pos(),4,4);
         update();
     }
     this->prev_pos = event->pos();

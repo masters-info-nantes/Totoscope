@@ -15,10 +15,13 @@ class DrawingZone : public QWidget
     QPen pen;
     bool mouseDown;
     QImage* image;
+
 public:
     explicit DrawingZone();
     void setPenSize(int);
+    void setPenColor(QColor);
     ~DrawingZone();
+
 public slots:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *);

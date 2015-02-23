@@ -16,6 +16,7 @@
 
 #include <controller.h>
 #include <drawingzone.h>
+#include <exportgui.h>
 
 namespace Ui {
 class Gui;
@@ -29,6 +30,7 @@ class Gui : public QWidget
     DrawingZone* drawingZone;
     QAction* playButton;
     QAction* pauseButton;
+    QPushButton* colButton;
     QAction* colorButton;
     QColorDialog* colorPalette;
     QAction* vidAct;
@@ -36,7 +38,7 @@ class Gui : public QWidget
 
 
     public:
-        explicit Gui(QWidget *parent = 0);
+        explicit Gui(Controller*);
         ~Gui();
 
     public slots:
@@ -44,6 +46,7 @@ class Gui : public QWidget
         void setPenSize(int);
         void erase();
         void showPicker();
+        void changeColor(QColor);
         void undo();
         void redo();
         void newProject();
