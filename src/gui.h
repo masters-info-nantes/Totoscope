@@ -31,6 +31,8 @@ class Gui : public QWidget
     QAction* pauseButton;
     QAction* colorButton;
     QColorDialog* colorPalette;
+    QAction* vidAct;
+    QAction* vidButton;
 
 
     public:

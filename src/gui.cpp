@@ -71,7 +71,7 @@ Gui::Gui(QWidget *parent) :
             oignionAct = editMenu->addAction("Pelures d'Oignon");
             oignionAct->setCheckable(true);
             QObject::connect(oignionAct, SIGNAL(triggered()), this, SLOT(pelures()));
-        QAction *vidAct = new QAction(this);
+        vidAct = new QAction(this);
             vidAct = editMenu->addAction("Vidéo");
             vidAct->setCheckable(true);
             vidAct->setChecked(true);
@@ -121,7 +121,7 @@ Gui::Gui(QWidget *parent) :
             QSpinBox *oignonSpin = new QSpinBox;
                 oignonSpin->setRange(1,5);
             nbOignon = topBar->addWidget(oignonSpin);
-        QAction *vidButton = new QAction(this);
+        vidButton = new QAction(this);
             QCheckBox *vidCheck = new QCheckBox("Vidéo");
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
@@ -240,7 +240,9 @@ void Gui::closeProject()
 
 void Gui::stop()
 {
-    //TODO
+    //TODO stop lecture + retour début dessin
+    playButton->setVisible(true);
+    pauseButton->setVisible(false);
 }
 
 void Gui::playDraw()
@@ -272,12 +274,13 @@ void Gui::next()
 
 void Gui::pelures()
 {
-
+    //TODO
 }
 
 void Gui::video()
 {
-
+    //TODO afficher/enlever vidéo
+    //"relier" vidAct et vidButton
 }
 
 Gui::~Gui()
