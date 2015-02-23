@@ -17,6 +17,7 @@
 #include <controller.h>
 #include <drawingzone.h>
 #include <exportgui.h>
+#include <QTimer>
 
 namespace Ui {
 class Gui;
@@ -28,6 +29,7 @@ class Gui : public QWidget
     Q_OBJECT
     Controller* controller;
     DrawingZone* drawingZone;
+    QLabel* frameWidget;
     QAction* playButton;
     QAction* pauseButton;
     QPushButton* colButton;
@@ -63,6 +65,8 @@ class Gui : public QWidget
         void next();
         void pelures();
         void video();
+        void previousFrame();
+        void nextFrame();
 
     private:
         Ui::Gui *ui;

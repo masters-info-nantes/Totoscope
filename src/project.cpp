@@ -40,12 +40,15 @@ void Project::save()
     // use QXmlStreamWriter class to generate the XML
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
-    writer.writeStartElement("html");
-    writer.writeStartElement("a");
-    writer.writeAttribute("href", "http://example.com/");
-    writer.writeCharacters("My wonderful link");
-    writer.writeEndElement(); // a
-    writer.writeEndElement(); // html
+    writer.writeStartElement("project");
+    writer.writeStartElement("name");
+    writer.writeCharacters(this->name);
+    writer.writeEndElement(); // name
+    writer.writeStartElement("name");
+    writer.writeCharacters(this->name);
+    writer.writeEndElement(); // name
+
+    writer.writeEndElement(); // project
     writer.writeEndDocument();
 
     // Saving all the drawings
@@ -70,7 +73,7 @@ void Project::handleProcessing()
     for (i = 0; i < list.size(); ++i)
     {
         QFileInfo fileInfo = list.at(i);
-        QPixmap* pix = new QPixmap(fileInfo.fileName());
+        QPixmap* pix = new QPixmap(fileInfo.absoluteFilePath());
         this->pictures->push_back(pix);
         this->drawings->push_back(new QImage(pix->width(),pix->height(),QImage::Format_ARGB32));
     }
