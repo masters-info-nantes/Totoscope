@@ -4,11 +4,14 @@
 #include <QString>
 #include <project.h>
 #include <QObject>
+#include <QPixmap>
+#include <QImage>
 class Controller : public QObject
 {
     Q_OBJECT
 
     Project* project;
+    int currentImageIndex;
 public:
     Controller();
 
@@ -20,6 +23,10 @@ public slots:
     void createProject(QString aName, QString aVideofile, int aFramerate);
     void saveProject();
     void saveProject(QString pat);
+    QPixmap* getPicture();
+    QImage* getDrawing();
+    void nextFrame();
+    void previousFrame();
 };
 
 #endif // CONTROLLER_H

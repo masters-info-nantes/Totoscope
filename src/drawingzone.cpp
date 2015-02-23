@@ -51,3 +51,22 @@ void DrawingZone::mouseMoveEvent(QMouseEvent *event)
     }
     this->prev_pos = event->pos();
 }
+void DrawingZone::setImage(QImage* anImage)
+{
+    this->image = anImage;
+}
+
+void DrawingZone::updatePrevImage()
+{
+    this->prev_image = this->image;
+}
+
+void DrawingZone::undoImage()
+{
+    this->image = this->prev_image;
+}
+
+QImage* DrawingZone::getImage()
+{
+    return this->image;
+}

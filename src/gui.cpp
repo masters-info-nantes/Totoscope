@@ -9,7 +9,6 @@ Gui::Gui(Controller* aController) :
     QGridLayout* layout = new QGridLayout();
     QStackedLayout* stack = new QStackedLayout();
     QWidget* container = new QWidget();
-    this->drawingZone = new DrawingZone();
 
     ////////////////////////////
     /// Barre Menu principal ///
@@ -173,19 +172,34 @@ Gui::Gui(Controller* aController) :
     /////////////////////////
     /// Drawing management //
     /////////////////////////
+
+
+    this->drawingZone = new DrawingZone();
     this->setLayout(layout);
     layout->addWidget(menuBar);
     layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1,1,3);
     layout->addWidget(scrollBar,2,0,1,4);
+    QPushButton* nextImage = new QPushButton("next image");
+    QPushButton* previousImage = new QPushButton("previous image");
+    QObject::connect(previousImage,SIGNAL(clicked()),this,SLOT(previousFrame()));
+    QObject::connect(nextImage,SIGNAL(clicked()),this,SLOT(nextFrame()));
+    layout->addWidget(previousImage,3,0);
+    layout->addWidget(nextImage,3,1);
+
     container->setLayout(stack);
-    QLabel* frameWidget = new QLabel();
-    frameWidget->setPixmap(QPixmap("temp/movie29.jpg"));
+    frameWidget = new QLabel();
+    frameWidget->setPixmap(*(this->controller->getPicture()));
+    drawingZone->setImage(this->controller->getDrawing());
     stack->addWidget(frameWidget);
     stack->addWidget(drawingZone);
     stack->setCurrentWidget(drawingZone);
     stack->setStackingMode(QStackedLayout::StackAll);
+    QTimer* timer = new QTimer();
+    timer->setInterval(500);
+    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
+    timer->start();
 }
 
 void Gui::draw()
@@ -215,6 +229,20 @@ void Gui::changeColor(QColor newcolor)
 {
     colButton->setStyleSheet("background-color:"+newcolor.name()+";");
     drawingZone->setPenColor(newcolor);
+}
+
+void Gui::nextFrame()
+{
+    this->controller->nextFrame();
+    this->drawingZone->setImage(this->controller->getDrawing());
+    this->frameWidget->setPixmap(*(this->controller->getPicture()));
+}
+
+void Gui::previousFrame()
+{
+    this->controller->previousFrame();
+    this->drawingZone->setImage(this->controller->getDrawing());
+    this->frameWidget->setPixmap(*(this->controller->getPicture()));
 }
 
 void Gui::undo()
