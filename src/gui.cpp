@@ -150,6 +150,26 @@ Gui::Gui(Controller* aController) :
             backButton = leftBar->addAction(QIcon("../src/pictures/back.png"),"Annuler");
             QObject::connect(backButton, SIGNAL(triggered()), this, SLOT(undo()));
 
+    ///////////////////////////////
+    /// Barre de défilement bas ///
+    ///////////////////////////////
+    QScrollArea *scrollBar = new QScrollArea;
+        QWidget *scrollWidget = new QWidget;
+            QHBoxLayout *hblayout = new QHBoxLayout;
+            for(int i=0; i<30; i++)
+            {
+                QString filepath = "temp/movie"+QString::number(i)+".jpg";
+                QLabel *lb = new QLabel;
+                lb->setPixmap(QPixmap::fromImage(QImage(filepath)));
+                hblayout->addWidget(lb);
+            }
+        scrollWidget->setLayout(hblayout);
+    scrollBar->setWidget(scrollWidget);
+
+
+
+
+
     /////////////////////////
     /// Drawing management //
     /////////////////////////
@@ -158,6 +178,7 @@ Gui::Gui(Controller* aController) :
     layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1,1,3);
+    layout->addWidget(scrollBar,2,0,1,4);
     container->setLayout(stack);
     QLabel* frameWidget = new QLabel();
     frameWidget->setPixmap(QPixmap("temp/movie29.jpg"));

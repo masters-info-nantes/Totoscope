@@ -13,6 +13,8 @@
 #include <QMenuBar>
 #include <QToolBar>
 #include <QAction>
+#include <QScrollArea>
+#include <QPixmap>
 
 #include <controller.h>
 #include <drawingzone.h>
