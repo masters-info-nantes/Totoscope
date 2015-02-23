@@ -5,6 +5,7 @@ Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
     this->setFixedSize(800,600);
+    this->setWindowTitle(tr("Totoscope"));
     ui->setupUi(this);
     QGridLayout* layout = new QGridLayout();
     QStackedLayout* stack = new QStackedLayout();
@@ -13,7 +14,7 @@ Gui::Gui(Controller* aController) :
     ////////////////////////////
     /// Barre Menu principal ///
     ////////////////////////////
-    QMenuBar *menuBar = new QMenuBar(this);
+    menuBar = new QMenuBar(this);
     QMenu *fileMenu = new QMenu;
         fileMenu = menuBar->addMenu(tr("&Fichier"));
         QAction *newAct = new QAction(this);
@@ -88,15 +89,16 @@ Gui::Gui(Controller* aController) :
             nextAct->setShortcut(QKeySequence(Qt::Key_Right));
             QObject::connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
 
-        QMenu *helpMenu = new QMenu;
+    QMenu *helpMenu = new QMenu;
         helpMenu = menuBar->addMenu(tr("&Aide"));
         QAction *aboutAct = new QAction(this);
             aboutAct = helpMenu->addAction("A Propos");
+            QObject::connect(aboutAct, SIGNAL(triggered()), this, SLOT(showMessage()));
 
     //////////////////////////////
     /// Barre horizontale haut ///
     //////////////////////////////
-    QToolBar *topBar = new QToolBar(this);
+    topBar = new QToolBar(this);
         QAction *stopButton = new QAction(this);
             stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
             QObject::connect(stopButton, SIGNAL(triggered()), this, SLOT(stop()));
@@ -128,7 +130,7 @@ Gui::Gui(Controller* aController) :
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
-    QToolBar *leftBar = new QToolBar(this);
+    leftBar = new QToolBar(this);
         leftBar->setOrientation(Qt::Vertical);
         QAction *penButton = new QAction(this);
             penButton = leftBar->addAction(QIcon("../src/pictures/pen.png"),"Crayon");
@@ -152,22 +154,18 @@ Gui::Gui(Controller* aController) :
     ///////////////////////////////
     /// Barre de défilement bas ///
     ///////////////////////////////
-    QScrollArea *scrollBar = new QScrollArea;
+    scrollBar = new QScrollArea;
         QWidget *scrollWidget = new QWidget;
             QHBoxLayout *hblayout = new QHBoxLayout;
             for(int i=0; i<30; i++)
             {
                 QString filepath = "temp/movie"+QString::number(i)+".jpg";
-                QLabel *lb = new QLabel;
-                lb->setPixmap(QPixmap::fromImage(QImage(filepath)));
-                hblayout->addWidget(lb);
+                Thumbnail *thumb = new Thumbnail(filepath);
+                connect(thumb, SIGNAL(clicked(QString)), this, SLOT(showThumb(QString)));
+                hblayout->addWidget(thumb);
             }
         scrollWidget->setLayout(hblayout);
     scrollBar->setWidget(scrollWidget);
-
-
-
-
 
     /////////////////////////
     /// Drawing management //
@@ -230,6 +228,16 @@ void Gui::changeColor(QColor newcolor)
     drawingZone->setPenColor(newcolor);
 }
 
+void Gui::undo()
+{
+    //TODO annuler action
+}
+
+void Gui::showThumb(QString filepath)
+{
+
+}
+
 void Gui::nextFrame()
 {
     this->controller->nextFrame();
@@ -242,11 +250,6 @@ void Gui::previousFrame()
     this->controller->previousFrame();
     this->drawingZone->setImage(this->controller->getDrawing());
     this->frameWidget->setPixmap(*(this->controller->getPicture()));
-}
-
-void Gui::undo()
-{
-    //TODO annuler action
 }
 
 void Gui::redo()
@@ -341,8 +344,23 @@ void Gui::video()
     //"relier" vidAct et vidButton
 }
 
+void Gui::showMessage()
+{
+    QMessageBox *aboutBox = new QMessageBox;
+        aboutBox->setWindowTitle(tr("A Propos"));
+        aboutBox->setText("Logiciel dévelopé par Marie Lenogue et Nicolas Brondin");
+        aboutBox->setInformativeText("Université de Nantes - 2015");
+        aboutBox->setStandardButtons(QMessageBox::Ok);
+        aboutBox->setDefaultButton(QMessageBox::Ok);
+        aboutBox->exec();
+}
+
 Gui::~Gui()
 {
     delete ui;
+    delete menuBar;
+    delete topBar;
+    delete leftBar;
+    delete scrollBar;
 }
 

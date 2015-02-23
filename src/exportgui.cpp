@@ -2,6 +2,7 @@
 
 ExportGui::ExportGui(int i, QWidget *parent) : QWidget(parent)
 {
+    this->setWindowTitle(tr("Exporter..."));
 
     dirEdit = new QLineEdit();
     browse = new QPushButton("Parcourir");

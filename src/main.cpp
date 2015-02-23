@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     Controller* controller = new Controller();
     SplashGui w(controller);
     w.show();
+    w.setWindowTitle("Totoscope");
 
     return a.exec();
 }

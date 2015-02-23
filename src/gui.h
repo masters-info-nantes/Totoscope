@@ -16,11 +16,15 @@
 #include <QScrollArea>
 #include <QPixmap>
 #include <QTimer>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QMessageBox>
 
 
 #include <controller.h>
 #include <drawingzone.h>
 #include <exportgui.h>
+#include <thumbnail.h>
 
 namespace Ui {
 class Gui;
@@ -41,6 +45,10 @@ class Gui : public QWidget
     QAction* vidAct;
     QAction* vidButton;
     QTimer* timer;
+    QMenuBar* menuBar;
+    QToolBar* topBar;
+    QToolBar* leftBar;
+    QScrollArea* scrollBar;
 
 
     public:
@@ -69,8 +77,10 @@ class Gui : public QWidget
         void next();
         void pelures();
         void video();
+        void showThumb(QString);
         void previousFrame();
         void nextFrame();
+        void showMessage();
 
     private:
         Ui::Gui *ui;

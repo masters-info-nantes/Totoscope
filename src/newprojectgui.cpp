@@ -3,6 +3,7 @@
 NewProjectGui::NewProjectGui(Controller* aController) :
     QWidget(0),controller(aController)
 {
+    this->setWindowTitle("Nouveau Projet");
     layout = new QGridLayout();
     nameEdit = new QLineEdit();
     nameEdit->setMinimumWidth(400);

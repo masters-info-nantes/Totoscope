@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     splashgui.cpp \
     newprojectgui.cpp \
     exportgui.cpp \
-    project.cpp
+    project.cpp \
+    thumbnail.cpp
 
 HEADERS  += gui.h \
     videodecomposer.h \
@@ -29,6 +30,7 @@ HEADERS  += gui.h \
     splashgui.h \
     newprojectgui.h \
     exportgui.h \
-    project.h
+    project.h \
+    thumbnail.h
 
 FORMS    += gui.ui
