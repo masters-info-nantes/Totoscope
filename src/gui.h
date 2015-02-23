@@ -15,11 +15,12 @@
 #include <QAction>
 #include <QScrollArea>
 #include <QPixmap>
+#include <QTimer>
+
 
 #include <controller.h>
 #include <drawingzone.h>
 #include <exportgui.h>
-#include <QTimer>
 
 namespace Ui {
 class Gui;
@@ -39,6 +40,7 @@ class Gui : public QWidget
     QColorDialog* colorPalette;
     QAction* vidAct;
     QAction* vidButton;
+    QTimer* timer;
 
 
     public:

@@ -196,11 +196,9 @@ Gui::Gui(Controller* aController) :
     stack->addWidget(drawingZone);
     stack->setCurrentWidget(drawingZone);
     stack->setStackingMode(QStackedLayout::StackAll);
-    QTimer* timer = new QTimer();
+    timer = new QTimer();
     timer->setInterval(500);
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
-    QObject::connect(playButton, SIGNAL(triggered()), timer, SLOT(start()));
-    QObject::connect(pauseButton, SIGNAL(triggered()), timer, SLOT(stop()));
 }
 
 void Gui::draw()
@@ -307,6 +305,7 @@ void Gui::playDraw()
     //TODO jouer les dessins
     playButton->setVisible(false);
     pauseButton->setVisible(true);
+    timer->start();
 }
 
 void Gui::pauseDraw()
@@ -314,6 +313,8 @@ void Gui::pauseDraw()
     //TODO pause sur la lecture des dessins
     playButton->setVisible(true);
     pauseButton->setVisible(false);
+    timer->stop();
+
 }
 
 void Gui::playPause()
