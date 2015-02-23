@@ -11,7 +11,7 @@ VideoDecomposer::VideoDecomposer(QString vid,int rate) :
 
 void VideoDecomposer::startProcessing()
 {
-    QString command = "avconv -i "+this->video+" -vsync 1 -r "+QString::number(this->framerate)+" -y videofolder/videoframe%d.jpg";
+    QString command = "avconv -i "+this->video+" -vsync 1 -r "+QString::number(this->framerate)+" -y temp/movie%d.jpg";
     this->process->start(command);
     qDebug("Processing started...");
     QObject::connect(process,SIGNAL(finished(int)),this,SLOT(handleCommandEnd()));

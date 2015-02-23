@@ -8,10 +8,11 @@ Project::Project(QString aName, QString aVideofile, int aFramerate)
     qDebug(aVideofile.toUtf8());
     qDebug(QString::number(aFramerate).toUtf8());
     this->drawings = new QList<QImage*>();
-    for(int i=0;i<5;i++)
-    {
-        this->drawings->push_back(new QImage(500,500,QImage::Format_ARGB32));
-    }
+    this->pictures = new QList<QPixmap*>();
+    // Décompose la vidéo en images
+    this->decomposer = new VideoDecomposer(aVideofile,aFramerate);
+    decomposer->startProcessing();
+    QObject::connect(this->decomposer,SIGNAL(processingFinished()),this,SLOT(handleProcessing()));
 }
 
 Project::Project(QString aPath)
@@ -58,5 +59,32 @@ void Project::save()
 Project::~Project()
 {
 
+}
+
+void Project::handleProcessing()
+{
+    QDir dir("temp");
+    dir.setFilter(QDir::Files | QDir::NoSymLinks);
+    QFileInfoList list = dir.entryInfoList();
+    int i;
+    for (i = 0; i < list.size(); ++i)
+    {
+        QFileInfo fileInfo = list.at(i);
+        QPixmap* pix = new QPixmap(fileInfo.fileName());
+        this->pictures->push_back(pix);
+        this->drawings->push_back(new QImage(pix->width(),pix->height(),QImage::Format_ARGB32));
+    }
+    qDebug(QString::number(i).toUtf8()+" images generated");
+    emit(this->projectCreated());
+}
+
+QList<QImage*>* Project::getDrawings()
+{
+    return this->drawings;
+}
+
+QList<QPixmap*>* Project::getPictures()
+{
+    return this->pictures;
 }
 

@@ -3,8 +3,6 @@
 Controller::Controller()
     :QObject()
 {
-    this->decomposer = new VideoDecomposer("Generique.MOV",8);
-    //decomposer->startProcessing();
 
 }
 
@@ -16,6 +14,7 @@ void Controller::openProject(QString path)
 void Controller::createProject(QString aName, QString aVideofile, int aFramerate)
 {
     this->project = new Project(aName,aVideofile,aFramerate);
+    QObject::connect(this->project,SIGNAL(projectCreated()),this,SLOT(handleProjectCreation()));
 }
 
 void Controller::saveProject()
@@ -26,4 +25,9 @@ void Controller::saveProject()
 void Controller::saveProject(QString aPath)
 {
     this->project->save(aPath);
+}
+
+void Controller::handleProjectCreation()
+{
+    emit(this->projectCreated());
 }

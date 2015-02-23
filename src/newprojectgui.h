@@ -30,6 +30,7 @@ signals:
 public slots:
     void chooseVideo();
     void createProject();
+    void nextWindow();
 };
 
 #endif // NEWPROJECTGUI_H

@@ -160,7 +160,7 @@ Gui::Gui(Controller* aController) :
     layout->addWidget(container,1,1,1,3);
     container->setLayout(stack);
     QLabel* frameWidget = new QLabel();
-    frameWidget->setPixmap(QPixmap("videofolder/videoframe29.jpg"));
+    frameWidget->setPixmap(QPixmap("temp/movie29.jpg"));
     stack->addWidget(frameWidget);
     stack->addWidget(drawingZone);
     stack->setCurrentWidget(drawingZone);
