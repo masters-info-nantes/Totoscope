@@ -50,8 +50,14 @@ void NewProjectGui::createProject()
     else
     {
         this->controller->createProject(this->nameEdit->text(),this->videoEdit->text(),this->selectFramerate->currentText().toInt());
-        Gui* window = new Gui(this->controller);
-        window->show();
-        this->close();
+        QObject::connect(this->controller,SIGNAL(projectCreated()),this,SLOT(nextWindow()));
     }
+}
+
+void NewProjectGui::nextWindow()
+{
+
+    Gui* window = new Gui(this->controller);
+    window->show();
+    this->close();
 }

@@ -1,6 +1,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include<videodecomposer.h>
+
 #include <QString>
 #include <project.h>
 #include <QObject>
@@ -8,13 +8,15 @@ class Controller : public QObject
 {
     Q_OBJECT
 
-    VideoDecomposer* decomposer;
     Project* project;
 public:
     Controller();
 
+signals:
+    void projectCreated();
 public slots:
     void openProject(QString path);
+    void handleProjectCreation();
     void createProject(QString aName, QString aVideofile, int aFramerate);
     void saveProject();
     void saveProject(QString pat);
