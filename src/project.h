@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QString>
 #include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 #include <QFile>
 #include <videodecomposer.h>
 #include <QDir>
@@ -12,6 +13,7 @@
 #include <QFileInfoList>
 #include <QPixmap>
 #include <QObject>
+#include <QMessageBox>
 
 class Project : public QObject
 {

@@ -9,6 +9,7 @@ Controller::Controller()
 void Controller::openProject(QString path)
 {
     this->project = new Project(path);
+     //QObject::connect(this->project,SIGNAL(projectCreated()),this,SLOT(handleProjectCreation()));
 }
 
 void Controller::createProject(QString aName, QString aVideofile, int aFramerate)
