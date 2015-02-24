@@ -3,6 +3,8 @@
 Project::Project(QString aName, QString aVideofile, int aFramerate)
 {
     this->path="";
+    this->name = aName;
+    this->framerate = aFramerate;
     qDebug("project created");
     qDebug(aName.toUtf8());
     qDebug(aVideofile.toUtf8());
@@ -24,37 +26,48 @@ Project::Project(QString aPath)
 void Project::save(QString aPath)
 {
     qDebug("save under...");
-
-}
-
-void Project::save()
-{
-    // Creating Project File
-    qDebug("save");
-    QFile file("tto.xml");
-        if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            qDebug("Cannot write file ");
-        }
+    this->path = aPath;
+    QFile file(aPath+"manifest.tots");
+    qDebug((aPath+"manifest.tots").toUtf8());
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        qDebug("Cannot write file ");
+    }
 
     QXmlStreamWriter writer(&file);
-    // use QXmlStreamWriter class to generate the XML
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
     writer.writeStartElement("project");
     writer.writeStartElement("name");
     writer.writeCharacters(this->name);
     writer.writeEndElement(); // name
-    writer.writeStartElement("name");
-    writer.writeCharacters(this->name);
-    writer.writeEndElement(); // name
-
+    writer.writeStartElement("path");
+    writer.writeCharacters(this->path);
+    writer.writeEndElement(); // path
+    writer.writeStartElement("framerate");
+    writer.writeCharacters(QString::number(this->framerate));
+    writer.writeEndElement(); // framerate
     writer.writeEndElement(); // project
     writer.writeEndDocument();
 
+    this->save();
+
+}
+
+void Project::save()
+{
     // Saving all the drawings
+    QDir dir(this->path+"drawings/");
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    QDir dir2(this->path+"pictures/");
+    if (!dir2.exists()) {
+        dir2.mkpath(".");
+    }
     for(int i=0; i<this->drawings->length();i++)
     {
-        this->drawings->at(i)->save(QString::number(i)+".png","PNG");
+        this->drawings->at(i)->save(this->path+"drawings/"+QString::number(i)+".png","PNG");
+        this->pictures->at(i)->save(this->path+"pictures/"+QString::number(i)+".jpg","JPG");
     }
 
 }
@@ -91,3 +104,7 @@ QList<QPixmap*>* Project::getPictures()
     return this->pictures;
 }
 
+QString Project::getPath()
+{
+    return this->path;
+}

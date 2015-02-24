@@ -21,6 +21,7 @@ class Project : public QObject
     VideoDecomposer* decomposer;
     QString name;
     QString path;
+    int framerate;
     QList<QImage*>* drawings;
     QList<QPixmap*>* pictures;
 public:
@@ -30,6 +31,7 @@ public:
     void save();
     QList<QImage*>* getDrawings();
     QList<QPixmap*>* getPictures();
+    QString getPath();
     ~Project();
 signals:
     void projectCreated();

@@ -44,10 +44,19 @@ QImage* Controller::getDrawing()
 
 void Controller::nextFrame()
 {
+    if(this->currentImageIndex<this->project->getPictures()->length()-1)
     this->currentImageIndex++;
 }
 
 void Controller::previousFrame()
 {
+    if(this->currentImageIndex>0)
     this->currentImageIndex--;
+}
+
+bool Controller::isProjectSaved()
+{
+    if(this->project->getPath()=="")
+        return false;
+    return true;
 }
