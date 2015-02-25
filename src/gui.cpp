@@ -5,7 +5,7 @@ Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
     this->setFixedSize(800,600);
-    this->setWindowTitle(tr("Totoscope"));
+    this->setWindowTitle("Totoscope");
     ui->setupUi(this);
     QGridLayout* layout = new QGridLayout();
     QStackedLayout* stack = new QStackedLayout();
@@ -20,20 +20,28 @@ Gui::Gui(Controller* aController) :
         fileMenu = menuBar->addMenu(tr("&Fichier"));
         QAction *newAct = new QAction(this);
             newAct = fileMenu->addAction("Nouveau Projet");
-            newAct->setShortcut(QKeySequence::New);
+            newAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+            QShortcut *newCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_N),this);
+            QObject::connect(newCut, SIGNAL(activated()), this, SLOT(newProject()));
             QObject::connect(newAct, SIGNAL(triggered()), this, SLOT(newProject()));
         QAction *openAct = new QAction(this);
             openAct = fileMenu->addAction("Ouvrir Projet");
-            openAct->setShortcut(QKeySequence::Open);
+            openAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+            QShortcut *openCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O),this);
+            QObject::connect(openCut, SIGNAL(activated()), this, SLOT(openProject()));
             QObject::connect(openAct, SIGNAL(triggered()), this, SLOT(openProject()));
         fileMenu->addSeparator();
         QAction *saveAct = new QAction(this);
             saveAct = fileMenu->addAction("Enregistrer");
-            saveAct->setShortcut(QKeySequence::Save);
+            saveAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+            QShortcut *saveCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S),this);
+            QObject::connect(saveCut, SIGNAL(activated()), this, SLOT(save()));
             QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
         QAction *saveAsAct = new QAction(this);
             saveAsAct = fileMenu->addAction("Enregistrer sous");
-            saveAsAct->setShortcut(QKeySequence::SaveAs);
+            saveAsAct->setShortcut(QKeySequence(Qt::CTRL +Qt::SHIFT + Qt::Key_S));
+            QShortcut *saveAsCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S),this);
+            QObject::connect(saveAsCut, SIGNAL(activated()), this, SLOT(saveAs()));
             QObject::connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
         fileMenu->addSeparator();
         QMenu *exportMenu = new QMenu;
@@ -48,22 +56,30 @@ Gui::Gui(Controller* aController) :
         fileMenu->addSeparator();
         QAction *closeAct = new QAction(this);
             closeAct = fileMenu->addAction("Fermer Projet");
-            closeAct->setShortcut(QKeySequence::Close);
+            closeAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
+            QShortcut *closeCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W),this);
+            QObject::connect(closeCut, SIGNAL(activated()), this, SLOT(closeProject()));
             QObject::connect(closeAct, SIGNAL(triggered()), this, SLOT(closeProject()));
         QAction *exitAct = new QAction(this);
             exitAct = fileMenu->addAction("Quitter");
-            exitAct->setShortcut(QKeySequence::Quit);
+            exitAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+            QShortcut *exitCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q),this);
+            QObject::connect(exitCut, SIGNAL(activated()), QApplication::instance(), SLOT(quit()));
             QObject::connect(exitAct, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 
     QMenu *editMenu = new QMenu;
         editMenu = menuBar->addMenu(tr("&Edition"));
         QAction *undoAct = new QAction(this);
             undoAct = editMenu->addAction("Annuler");
-            undoAct->setShortcut(QKeySequence::Undo);
+            undoAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+            QShortcut *undoCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z),this);
+            QObject::connect(undoCut, SIGNAL(activated()), this, SLOT(undo()));
             QObject::connect(undoAct, SIGNAL(triggered()), this, SLOT(undo()));
         QAction *redoAct = new QAction(this);
             redoAct = editMenu->addAction("Retablir");
-            redoAct->setShortcut(QKeySequence::Redo);
+            redoAct->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+            QShortcut *redoCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z),this);
+            QObject::connect(redoCut, SIGNAL(activated()), this, SLOT(redo()));
             QObject::connect(redoAct, SIGNAL(triggered()), this, SLOT(redo()));
         editMenu->addSeparator();
         QAction *oignionAct = new QAction(this);
@@ -78,15 +94,21 @@ Gui::Gui(Controller* aController) :
         editMenu->addSeparator();
         QAction *playAct = new QAction(this);
             playAct = editMenu->addAction("Lecture/Pause");
-            //playAct->setShortcut(QKeySequence(Qt::));
+            playAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
+            QShortcut *playCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_P),this);
+            QObject::connect(playCut, SIGNAL(activated()), this, SLOT(playPause()));
             QObject::connect(playAct, SIGNAL(triggered()), this, SLOT(playPause()));
         QAction *stopAct = new QAction(this);
             stopAct = editMenu->addAction("Stop");
             stopAct->setShortcut(QKeySequence(Qt::Key_Left));
+            QShortcut *stopCut = new QShortcut(QKeySequence(Qt::Key_Left),this);
+            QObject::connect(stopCut, SIGNAL(activated()), this, SLOT(stop()));
             QObject::connect(stopAct, SIGNAL(triggered()), this, SLOT(stop()));
         QAction *nextAct = new QAction(this);
             nextAct = editMenu->addAction("Next");
             nextAct->setShortcut(QKeySequence(Qt::Key_Right));
+            QShortcut *nextCut = new QShortcut(QKeySequence(Qt::Key_Right),this);
+            QObject::connect(nextCut, SIGNAL(activated()), this, SLOT(next()));
             QObject::connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
 
     QMenu *helpMenu = new QMenu;
@@ -100,6 +122,7 @@ Gui::Gui(Controller* aController) :
     //////////////////////////////
 
     topBar = new QToolBar(this);
+        topBar->setStyleSheet("QToolBar {background:lightgrey;}");
         QAction *stopButton = new QAction(this);
             stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
             QObject::connect(stopButton, SIGNAL(triggered()), this, SLOT(stop()));
@@ -127,19 +150,23 @@ Gui::Gui(Controller* aController) :
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
             QObject::connect(vidButton, SIGNAL(triggered()), this, SLOT(video()));
-
+    /*QWidget *wid = new QWidget(this);
+        wid->setStyleSheet("{background:lightgrey;}");
+    */
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
 
     leftBar = new QToolBar(this);
         leftBar->setOrientation(Qt::Vertical);
+        leftBar->setStyleSheet("QToolBar {background:lightgrey;}");
         QAction *penButton = new QAction(this);
             penButton = leftBar->addAction(QIcon("../src/pictures/pen.png"),"Crayon");
             QObject::connect(penButton, SIGNAL(triggered()), this, SLOT(draw()));
         QAction *sizeButton = new QAction(this);
             QSpinBox *sizePen = new QSpinBox;
             sizePen->setRange(1,50);
+            sizePen->setValue(3);
             sizeButton = leftBar->addWidget(sizePen);
             QObject::connect(sizePen, SIGNAL(valueChanged(int)), this, SLOT(setPenSize(int)));
         QAction *eraserButton = new QAction(this);
@@ -147,6 +174,7 @@ Gui::Gui(Controller* aController) :
             QObject::connect(eraserButton, SIGNAL(triggered()), this, SLOT(erase()));
         this->colorButton = new QAction(this);
             colButton = new QPushButton;
+            colButton->setStyleSheet("background-color:black;");
             colorButton = leftBar->addWidget(colButton);
             QObject::connect(colButton, SIGNAL(clicked()), this, SLOT(showPicker()));
         QAction *backButton = new QAction(this);
@@ -174,10 +202,10 @@ Gui::Gui(Controller* aController) :
     /// Drawing management //
     /////////////////////////
 
-
     this->drawingZone = new DrawingZone();
     this->setLayout(layout);
     layout->addWidget(menuBar);
+    //layout->addWidget(wid,0,0,1,3);
     layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1,1,3);
@@ -306,9 +334,10 @@ void Gui::closeProject()
 
 void Gui::stop()
 {
-    //TODO stop lecture + retour début dessin
+    //TODO retour début dessin
     playButton->setVisible(true);
     pauseButton->setVisible(false);
+    timer->stop();
 }
 
 void Gui::playDraw()

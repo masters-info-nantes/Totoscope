@@ -5,6 +5,7 @@ DrawingZone::DrawingZone() :
 {
     this->image=new QImage(800,600,QImage::Format_ARGB32_Premultiplied);
     this->prev_pos = QPoint(-666,-666);
+    pen.setWidth(3);
 }
 
 DrawingZone::~DrawingZone()

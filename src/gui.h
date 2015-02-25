@@ -20,6 +20,7 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QShortcut>
 
 
 #include <controller.h>

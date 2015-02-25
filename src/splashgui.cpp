@@ -5,9 +5,15 @@ SplashGui::SplashGui(Controller* aController) :
 {
     this->setFixedSize(600,400);
     this->layout= new QGridLayout();
-    this->newProject = new QPushButton("New");
-    this->openProject = new QPushButton("Open");
-    this->quit = new QPushButton("Quit");
+    this->newProject = new QPushButton("Nouveau");
+        this->newProject->setIcon(QIcon("../src/pictures/new.png"));
+        this->newProject->setIconSize(QSize(32,32));
+    this->openProject = new QPushButton("Ouvrir");
+        this->openProject->setIcon(QIcon("../src/pictures/open.png"));
+        this->openProject->setIconSize(QSize(32,32));
+    this->quit = new QPushButton("Fermer");
+        this->quit->setIcon(QIcon("../src/pictures/exit.png"));
+        this->quit->setIconSize(QSize(32,32));
     this->title = new QLabel("Totoscope!");
     this->description = new QLabel("Developed by Marie Lenogue and Nicolas Brondin");
     this->setLayout(this->layout);
