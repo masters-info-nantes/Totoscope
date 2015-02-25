@@ -14,6 +14,7 @@ Gui::Gui(Controller* aController) :
     ////////////////////////////
     /// Barre Menu principal ///
     ////////////////////////////
+
     menuBar = new QMenuBar(this);
     QMenu *fileMenu = new QMenu;
         fileMenu = menuBar->addMenu(tr("&Fichier"));
@@ -98,6 +99,7 @@ Gui::Gui(Controller* aController) :
     //////////////////////////////
     /// Barre horizontale haut ///
     //////////////////////////////
+
     topBar = new QToolBar(this);
         QAction *stopButton = new QAction(this);
             stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
@@ -130,6 +132,7 @@ Gui::Gui(Controller* aController) :
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
+
     leftBar = new QToolBar(this);
         leftBar->setOrientation(Qt::Vertical);
         QAction *penButton = new QAction(this);
@@ -154,6 +157,7 @@ Gui::Gui(Controller* aController) :
     ///////////////////////////////
     /// Barre de défilement bas ///
     ///////////////////////////////
+
     scrollBar = new QScrollArea;
         QWidget *scrollWidget = new QWidget;
             QHBoxLayout *hblayout = new QHBoxLayout;
