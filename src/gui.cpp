@@ -30,8 +30,7 @@ Gui::Gui(Controller* aController) :
         QAction *saveAct = new QAction(this);
             saveAct = fileMenu->addAction("Enregistrer");
             saveAct->setShortcut(QKeySequence::Save);
-            QObject::connect(saveAct,SIGNAL(triggered()),this->controller,SLOT(saveProject()));
-            //QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+            QObject::connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
         QAction *saveAsAct = new QAction(this);
             saveAsAct = fileMenu->addAction("Enregistrer sous");
             saveAsAct->setShortcut(QKeySequence::SaveAs);
@@ -273,12 +272,17 @@ void Gui::openProject()
 
 void Gui::save()
 {
-    //TODO
+    if(this->controller->isProjectSaved())
+        this->controller->saveProject();
+    else
+        saveAs();
 }
 
 void Gui::saveAs()
 {
     //TODO
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    this->controller->saveProject(dir+"/");
 }
 
 void Gui::imgExport()

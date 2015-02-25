@@ -14,7 +14,7 @@ class Controller : public QObject
     int currentImageIndex;
 public:
     Controller();
-
+    bool isProjectSaved();
 signals:
     void projectCreated();
 public slots:
@@ -22,7 +22,7 @@ public slots:
     void handleProjectCreation();
     void createProject(QString aName, QString aVideofile, int aFramerate);
     void saveProject();
-    void saveProject(QString pat);
+    void saveProject(QString);
     QPixmap* getPicture();
     QImage* getDrawing();
     void nextFrame();

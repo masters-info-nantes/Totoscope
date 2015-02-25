@@ -9,6 +9,7 @@ Controller::Controller()
 void Controller::openProject(QString path)
 {
     this->project = new Project(path);
+     //QObject::connect(this->project,SIGNAL(projectCreated()),this,SLOT(handleProjectCreation()));
 }
 
 void Controller::createProject(QString aName, QString aVideofile, int aFramerate)
@@ -44,10 +45,19 @@ QImage* Controller::getDrawing()
 
 void Controller::nextFrame()
 {
+    if(this->currentImageIndex<this->project->getPictures()->length()-1)
     this->currentImageIndex++;
 }
 
 void Controller::previousFrame()
 {
+    if(this->currentImageIndex>0)
     this->currentImageIndex--;
+}
+
+bool Controller::isProjectSaved()
+{
+    if(this->project->getPath()=="")
+        return false;
+    return true;
 }

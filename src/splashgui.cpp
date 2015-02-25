@@ -23,7 +23,8 @@ SplashGui::SplashGui(Controller* aController) :
 void SplashGui::windowfile()
 {
     QFileDialog*  file= new QFileDialog();
-    QString project = file->getOpenFileName(this,"Open Project", "/","");
+    QString project = file->getOpenFileName(this,"Open Project", "/home","");
+    qDebug(project.toUtf8());
     if(project!="")
     {
         this->controller->openProject(project);

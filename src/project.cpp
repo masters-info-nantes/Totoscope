@@ -3,6 +3,8 @@
 Project::Project(QString aName, QString aVideofile, int aFramerate)
 {
     this->path="";
+    this->name = aName;
+    this->framerate = aFramerate;
     qDebug("project created");
     qDebug(aName.toUtf8());
     qDebug(aVideofile.toUtf8());
@@ -17,44 +19,115 @@ Project::Project(QString aName, QString aVideofile, int aFramerate)
 
 Project::Project(QString aPath)
 {
-    this->path = aPath;
+    this->drawings = new QList<QImage*>();
+    this->pictures = new QList<QPixmap*>();
     qDebug("project opened!");
+    QFile file(aPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        qDebug("Couldn't open xmlfile.xml to load settings for download");
+
+    QXmlStreamReader reader(&file);
+
+    //Parse the XML until we reach end of it
+    while(!reader.atEnd() && !reader.hasError()) {
+            // Read next element
+            QXmlStreamReader::TokenType token = reader.readNext();
+            //If token is just StartDocument - go to next
+            if(token == QXmlStreamReader::StartDocument) {
+                    continue;
+            }
+            //If token is StartElement - read it
+            if(token == QXmlStreamReader::StartElement) {
+                    if(reader.name() == "name") {
+                        this->name=reader.readElementText();
+                    }
+                    if(reader.name() == "path") {
+                        this->path=reader.readElementText();
+                    }
+                    if(reader.name() == "framerate") {
+                         this->framerate=reader.readElementText().toInt();
+                    }
+            }
+    }
+
+    if(reader.hasError()) {
+            qDebug((aPath+" Parse Error "+reader.errorString()).toUtf8());
+    }
+
+    //close reader and flush file
+    reader.clear();
+    file.close();
+    qDebug(this->name.toUtf8());
+    qDebug(this->path.toUtf8());
+    qDebug(QString::number(this->framerate).toUtf8());
+
+    QDir dir1(this->path+"drawings/");
+    QDir dir2(this->path+"pictures/");
+    qDebug(dir2.absolutePath().toUtf8());
+    dir1.setFilter(QDir::Files | QDir::NoSymLinks);
+    dir2.setFilter(QDir::Files | QDir::NoSymLinks);
+    QFileInfoList list1 = dir1.entryInfoList();
+    QFileInfoList list2 = dir2.entryInfoList();
+    qDebug("nombre d'images: "+QString::number(list1.size()).toUtf8());
+    int i;
+    for (i = 0; i < list1.size(); ++i)
+    {
+        QFileInfo picInfo = list1.at(i);
+        QFileInfo imgInfo = list2.at(i);
+        QPixmap* pix = new QPixmap(picInfo.absoluteFilePath());
+        QImage* img = new QImage(imgInfo.absoluteFilePath());
+        this->pictures->push_back(pix);
+        this->drawings->push_back(img);
+        qDebug("new image!");
+    }
+
 }
 
 void Project::save(QString aPath)
 {
     qDebug("save under...");
-
-}
-
-void Project::save()
-{
-    // Creating Project File
-    qDebug("save");
-    QFile file("tto.xml");
-        if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            qDebug("Cannot write file ");
-        }
+    this->path = aPath;
+    QFile file(aPath+"manifest.tots");
+    qDebug((aPath+"manifest.tots").toUtf8());
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        qDebug("Cannot write file ");
+    }
 
     QXmlStreamWriter writer(&file);
-    // use QXmlStreamWriter class to generate the XML
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
     writer.writeStartElement("project");
     writer.writeStartElement("name");
     writer.writeCharacters(this->name);
     writer.writeEndElement(); // name
-    writer.writeStartElement("name");
-    writer.writeCharacters(this->name);
-    writer.writeEndElement(); // name
-
+    writer.writeStartElement("path");
+    writer.writeCharacters(this->path);
+    writer.writeEndElement(); // path
+    writer.writeStartElement("framerate");
+    writer.writeCharacters(QString::number(this->framerate));
+    writer.writeEndElement(); // framerate
     writer.writeEndElement(); // project
     writer.writeEndDocument();
 
+    this->save();
+
+}
+
+void Project::save()
+{
     // Saving all the drawings
+    QDir dir(this->path+"drawings/");
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    QDir dir2(this->path+"pictures/");
+    if (!dir2.exists()) {
+        dir2.mkpath(".");
+    }
     for(int i=0; i<this->drawings->length();i++)
     {
-        this->drawings->at(i)->save(QString::number(i)+".png","PNG");
+        this->drawings->at(i)->save(this->path+"drawings/"+QString::number(i)+".png","PNG");
+        this->pictures->at(i)->save(this->path+"pictures/"+QString::number(i)+".jpg","JPG");
     }
 
 }
@@ -91,3 +164,7 @@ QList<QPixmap*>* Project::getPictures()
     return this->pictures;
 }
 
+QString Project::getPath()
+{
+    return this->path;
+}

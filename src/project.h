@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QString>
 #include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 #include <QFile>
 #include <videodecomposer.h>
 #include <QDir>
@@ -12,6 +13,7 @@
 #include <QFileInfoList>
 #include <QPixmap>
 #include <QObject>
+#include <QMessageBox>
 
 class Project : public QObject
 {
@@ -21,6 +23,7 @@ class Project : public QObject
     VideoDecomposer* decomposer;
     QString name;
     QString path;
+    int framerate;
     QList<QImage*>* drawings;
     QList<QPixmap*>* pictures;
 public:
@@ -30,6 +33,7 @@ public:
     void save();
     QList<QImage*>* getDrawings();
     QList<QPixmap*>* getPictures();
+    QString getPath();
     ~Project();
 signals:
     void projectCreated();
