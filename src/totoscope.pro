@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     newprojectgui.cpp \
     exportgui.cpp \
     project.cpp \
-    thumbnail.cpp
+    thumbnail.cpp \
+    videorecomposer.cpp
 
 HEADERS  += gui.h \
     videodecomposer.h \
@@ -31,6 +32,7 @@ HEADERS  += gui.h \
     newprojectgui.h \
     exportgui.h \
     project.h \
-    thumbnail.h
+    thumbnail.h \
+    videorecomposer.h
 
 FORMS    += gui.ui

@@ -14,6 +14,7 @@
 #include <QPixmap>
 #include <QObject>
 #include <QMessageBox>
+#include <videorecomposer.h>
 
 class Project : public QObject
 {
@@ -31,6 +32,7 @@ public:
     Project(QString aPath);
     void save(QString aPath);
     void save();
+    void exportVideo(QString);
     QList<QImage*>* getDrawings();
     QList<QPixmap*>* getPictures();
     QString getPath();

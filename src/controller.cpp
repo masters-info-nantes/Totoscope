@@ -43,6 +43,16 @@ QImage* Controller::getDrawing()
     return this->project->getDrawings()->at(this->currentImageIndex);
 }
 
+QList<QImage*>* Controller::getOnions(int number)
+{
+    QList<QImage*>* onion = new QList<QImage*>();
+    for(int i=this->currentImageIndex;i>0&&i>(this->currentImageIndex-number);i--)
+    {
+        onion->push_back(this->project->getDrawings()->at(i));
+    }
+    return onion;
+}
+
 void Controller::nextFrame()
 {
     if(this->currentImageIndex<this->project->getPictures()->length()-1)
@@ -60,4 +70,9 @@ bool Controller::isProjectSaved()
     if(this->project->getPath()=="")
         return false;
     return true;
+}
+
+void Controller::exportVideo(QString aPath)
+{
+    this->project->exportVideo(aPath);
 }

@@ -23,7 +23,9 @@ public slots:
     void createProject(QString aName, QString aVideofile, int aFramerate);
     void saveProject();
     void saveProject(QString);
+    void exportVideo(QString);
     QPixmap* getPicture();
+    QList<QImage*>* getOnions(int);
     QImage* getDrawing();
     void nextFrame();
     void previousFrame();

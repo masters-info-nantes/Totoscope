@@ -4,11 +4,11 @@
 Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
-    this->setFixedSize(800,600);
+    //this->setFixedSize(800,600);
     this->setWindowTitle("Totoscope");
     ui->setupUi(this);
     QGridLayout* layout = new QGridLayout();
-    QStackedLayout* stack = new QStackedLayout();
+   stack = new QStackedLayout();
     QWidget* container = new QWidget();
 
     ////////////////////////////
@@ -142,7 +142,7 @@ Gui::Gui(Controller* aController) :
             oignonButton = topBar->addWidget(oignonCheck);
             QObject::connect(oignonButton, SIGNAL(triggered()), this, SLOT(pelures()));
         QAction *nbOignon = new QAction(this);
-            QSpinBox *oignonSpin = new QSpinBox;
+            oignonSpin = new QSpinBox;
                 oignonSpin->setRange(1,5);
             nbOignon = topBar->addWidget(oignonSpin);
         vidButton = new QAction(this);
@@ -316,14 +316,14 @@ void Gui::saveAs()
 void Gui::imgExport()
 {
     //TODO
-    ExportGui *exportWin = new ExportGui(0);
+    ExportGui *exportWin = new ExportGui(0,this->controller);
     exportWin->show();
 }
 
 void Gui::vidExport()
 {
     //TODO
-    ExportGui *exportWin = new ExportGui(1);
+    ExportGui *exportWin = new ExportGui(1,this->controller);
     exportWin->show();
 }
 
@@ -372,13 +372,37 @@ void Gui::next()
 
 void Gui::pelures()
 {
-    //TODO
+    QLayoutItem *item;
+    while((item = stack->takeAt(0)))
+    {
+        stack->removeItem(item);
+    }
+
+    stack->addWidget(frameWidget);
+
+    for(int i=0;i<this->oignonSpin->value();i++)
+    {
+        QImage* img = this->controller->getOnions(this->oignonSpin->value())->at(i);
+        QLabel* container = new QLabel();
+        //QPixmap* pix = new QPixmap();
+        container->setPixmap(QPixmap::fromImage(*img));
+        stack->addWidget(container);
+        qDebug("Adding onion!!");
+    }
+
+    stack->addWidget(drawingZone);
+    stack->setCurrentWidget(drawingZone);
+    stack->setStackingMode(QStackedLayout::StackAll);
 }
 
 void Gui::video()
 {
     //TODO afficher/enlever vidéo
     //"relier" vidAct et vidButton
+    if(vidAct->isChecked())
+        this->stack->setStackingMode(QStackedLayout::StackAll);
+    else
+        this->stack->setStackingMode(QStackedLayout::StackOne);
 }
 
 void Gui::showMessage()

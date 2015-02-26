@@ -41,6 +41,7 @@ class Gui : public QWidget
     QLabel* frameWidget;
     QAction* playButton;
     QAction* pauseButton;
+    QSpinBox *oignonSpin;
     QPushButton* colButton;
     QAction* colorButton;
     QColorDialog* colorPalette;
@@ -51,6 +52,7 @@ class Gui : public QWidget
     QToolBar* topBar;
     QToolBar* leftBar;
     QScrollArea* scrollBar;
+    QStackedLayout* stack;
 
 
     public:

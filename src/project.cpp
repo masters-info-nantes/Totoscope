@@ -168,3 +168,9 @@ QString Project::getPath()
 {
     return this->path;
 }
+
+void Project::exportVideo(QString aPath)
+{
+    VideoRecomposer* recomposer = new VideoRecomposer(aPath,this->path,this->framerate);
+    qDebug("exported!");
+}
