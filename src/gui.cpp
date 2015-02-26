@@ -5,6 +5,7 @@ Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
     //this->setFixedSize(800,600);
+    this->setMinimumSize(800,600);
     this->setWindowTitle("Totoscope");
     ui->setupUi(this);
     QGridLayout* layout = new QGridLayout();
@@ -150,14 +151,15 @@ Gui::Gui(Controller* aController) :
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
             QObject::connect(vidButton, SIGNAL(triggered()), this, SLOT(video()));
-
-    /*QBoxLayout *hlay = new QBoxLayout(QBoxLayout::RightToLeft,this);
-        //hlay->insertSpacing(0,3);
-        hlay->addWidget(topBar);
+    /*
+    QGridLayout *lay = new QGridLayout;
+        lay->addWidget(topBar,0,3);
     QWidget *wid = new QWidget(this);
         wid->setStyleSheet("{background:lightgrey;}");
-        wid->setLayout(hlay);*/
-
+        wid->setLayout(lay);
+        wid->setMinimumSize(800,80);
+        wid->paintEvent(QPaintEvent());
+    */
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
@@ -271,7 +273,7 @@ void Gui::undo()
 
 void Gui::showThumb(QString filepath)
 {
-
+    //TODO get image suivant index
 }
 
 void Gui::nextFrame()
@@ -347,7 +349,6 @@ void Gui::stop()
 
 void Gui::playDraw()
 {
-    //TODO jouer les dessins
     playButton->setVisible(false);
     pauseButton->setVisible(true);
     timer->start();
@@ -355,7 +356,6 @@ void Gui::playDraw()
 
 void Gui::pauseDraw()
 {
-    //TODO pause sur la lecture des dessins
     playButton->setVisible(true);
     pauseButton->setVisible(false);
     timer->stop();
@@ -402,23 +402,11 @@ void Gui::pelures()
 
 void Gui::video()
 {
-    //TODO afficher/enlever vidéo
-    //"relier" vidAct et vidButton
-<<<<<<< HEAD
-    if (vidButton->isChecked())
-    {
-        frameWidget->setDisabled(false);
-    }
-    else
-    {
-
-    }
-=======
     if(vidAct->isChecked())
         this->stack->setStackingMode(QStackedLayout::StackAll);
     else
         this->stack->setStackingMode(QStackedLayout::StackOne);
->>>>>>> a8f3adc63270d2287a6f611d16673fdf22d9facb
+
 }
 
 void Gui::showMessage()
