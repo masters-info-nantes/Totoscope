@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QFileDialog>
 #include <gui.h>
+#include <QTextCodec>
 
 class NewProjectGui : public QWidget
 {

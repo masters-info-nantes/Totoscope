@@ -1,6 +1,7 @@
 #include "exportgui.h"
 
-ExportGui::ExportGui(int i, QWidget *parent) : QWidget(parent)
+ExportGui::ExportGui(int i, Controller* controller)
+    : QWidget(0)
 {
     this->setWindowTitle(tr("Exporter..."));
 
@@ -14,6 +15,7 @@ ExportGui::ExportGui(int i, QWidget *parent) : QWidget(parent)
         formatBox->addItem(".png");
     QPushButton *cancelButton = new QPushButton("Annuler");
     QPushButton *exportButton = new QPushButton("Exporter");
+    QObject::connect(exportButton,SIGNAL(clicked()),this,SLOT(exportVideo()));
 
     QWidget *vidPage = new QWidget;
         QGridLayout *vidLayout = new QGridLayout;
@@ -50,4 +52,10 @@ ExportGui::ExportGui(int i, QWidget *parent) : QWidget(parent)
 ExportGui::~ExportGui()
 {
 
+}
+
+void ExportGui::exportVideo()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    this->controller->exportVideo(dir+"/");
 }

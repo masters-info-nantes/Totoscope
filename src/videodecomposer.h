@@ -13,7 +13,6 @@ class VideoDecomposer : public QObject
 {
     Q_OBJECT
 
-    int index;
     int framerate;
     QString video;
     QProcess* process;

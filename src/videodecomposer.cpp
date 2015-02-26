@@ -3,7 +3,6 @@
 VideoDecomposer::VideoDecomposer(QString vid,int rate) :
     QObject(0)
 {
-    this->index = 1;
     this->framerate = rate;
     this->process = new QProcess();
     this->video= vid;

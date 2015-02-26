@@ -8,6 +8,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QComboBox>
+#include <QFileDialog>
+#include <controller.h>
 
 class ExportGui : public QWidget
 {
@@ -17,15 +19,17 @@ class ExportGui : public QWidget
     QComboBox* codecBox;
     QLineEdit* vidEdit;
     QComboBox* formatBox;
+    Controller* controller;
 
 
 public:
-    explicit ExportGui(int i,QWidget *parent = 0);
+    explicit ExportGui(int i,Controller*);
     ~ExportGui();
 
 signals:
 
 public slots:
+        void exportVideo();
 
 };
 
