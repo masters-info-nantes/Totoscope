@@ -122,7 +122,7 @@ Gui::Gui(Controller* aController) :
     //////////////////////////////
 
     topBar = new QToolBar(this);
-        topBar->setStyleSheet("QToolBar {background:lightgrey;}");
+        //topBar->setStyleSheet("QToolBar {background:lightgrey;}");
         QAction *stopButton = new QAction(this);
             stopButton = topBar->addAction(QIcon("../src/pictures/stop.png"),"Stop");
             QObject::connect(stopButton, SIGNAL(triggered()), this, SLOT(stop()));
@@ -150,16 +150,21 @@ Gui::Gui(Controller* aController) :
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
             QObject::connect(vidButton, SIGNAL(triggered()), this, SLOT(video()));
-    /*QWidget *wid = new QWidget(this);
+
+    /*QBoxLayout *hlay = new QBoxLayout(QBoxLayout::RightToLeft,this);
+        //hlay->insertSpacing(0,3);
+        hlay->addWidget(topBar);
+    QWidget *wid = new QWidget(this);
         wid->setStyleSheet("{background:lightgrey;}");
-    */
+        wid->setLayout(hlay);*/
+
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
 
     leftBar = new QToolBar(this);
         leftBar->setOrientation(Qt::Vertical);
-        leftBar->setStyleSheet("QToolBar {background:lightgrey;}");
+        //leftBar->setStyleSheet("QToolBar {background:lightgrey;}");
         QAction *penButton = new QAction(this);
             penButton = leftBar->addAction(QIcon("../src/pictures/pen.png"),"Crayon");
             QObject::connect(penButton, SIGNAL(triggered()), this, SLOT(draw()));
@@ -205,7 +210,7 @@ Gui::Gui(Controller* aController) :
     this->drawingZone = new DrawingZone();
     this->setLayout(layout);
     layout->addWidget(menuBar);
-    //layout->addWidget(wid,0,0,1,3);
+    //layout->addWidget(wid,0,0,1,4);
     layout->addWidget(topBar,0,3);
     layout->addWidget(leftBar,1,0);
     layout->addWidget(container,1,1,1,3);
@@ -379,6 +384,14 @@ void Gui::video()
 {
     //TODO afficher/enlever vidéo
     //"relier" vidAct et vidButton
+    if (vidButton->isChecked())
+    {
+        frameWidget->setDisabled(false);
+    }
+    else
+    {
+
+    }
 }
 
 void Gui::showMessage()
