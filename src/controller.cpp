@@ -3,7 +3,7 @@
 Controller::Controller()
     :QObject()
 {
-    this->currentImageIndex = 30;
+    this->currentImageIndex = 0;
 }
 
 void Controller::openProject(QString path)
@@ -35,6 +35,12 @@ void Controller::handleProjectCreation()
 
 QPixmap* Controller::getPicture()
 {
+    return this->project->getPictures()->at(this->currentImageIndex);
+}
+
+QPixmap* Controller::getPicture(int index)
+{
+    this->currentImageIndex = index;
     return this->project->getPictures()->at(this->currentImageIndex);
 }
 

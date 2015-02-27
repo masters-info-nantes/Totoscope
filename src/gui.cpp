@@ -191,8 +191,9 @@ Gui::Gui(Controller* aController) :
             for(int i=0; i<30; i++)
             {
                 QString filepath = "temp/movie"+QString::number(i)+".jpg";
-                Thumbnail *thumb = new Thumbnail(filepath);
-                connect(thumb, SIGNAL(clicked(QString)), this, SLOT(showThumb(QString)));
+                Thumbnail *thumb = new Thumbnail(filepath,i);
+                //connect(thumb, SIGNAL(clicked(QString)), this, SLOT(showThumb(QString)));
+                QObject::connect(thumb,SIGNAL(clicked(int)),this,SLOT(showThumb(int)));
                 hblayout->addWidget(thumb);
             }
         scrollWidget->setLayout(hblayout);
@@ -264,9 +265,10 @@ void Gui::undo()
     //TODO annuler action
 }
 
-void Gui::showThumb(QString filepath)
+void Gui::showThumb(int index)
 {
-
+    this->frameWidget->setPixmap(*(this->controller->getPicture(index)));
+    this->drawingZone->setImage(this->controller->getDrawing());
 }
 
 void Gui::nextFrame()

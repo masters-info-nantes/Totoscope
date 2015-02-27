@@ -9,16 +9,17 @@ class Thumbnail : public QLabel
 {
     Q_OBJECT
     QString path;
+    int index;
 
 public:
-    explicit Thumbnail(QImage, QString filepath, QWidget *parent = 0);
-    Thumbnail(QPixmap, QString filepath, QWidget *parent = 0);
-    Thumbnail(QString, QWidget *parent = 0);
+
+    Thumbnail(QString, int);
     ~Thumbnail();
     QString getPath();
+    void deselect();
 
 signals:
-    void clicked(QString);
+    void clicked(int);
 
 public slots:
     void mousePressEvent(QMouseEvent *e);

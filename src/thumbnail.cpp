@@ -1,21 +1,12 @@
 #include "thumbnail.h"
 
-Thumbnail::Thumbnail(QImage img, QString filepath, QWidget *parent) : QLabel(parent)
-{
-    this->setPixmap(QPixmap::fromImage(img));
-    this->path = filepath;
-}
 
-Thumbnail::Thumbnail(QPixmap pix, QString filepath, QWidget *parent)
-{
-    this->setPixmap(pix);
-    this->path = filepath;
-}
-
-Thumbnail::Thumbnail(QString filepath, QWidget *parent)
+Thumbnail::Thumbnail(QString filepath, int anIndex)
+    :QLabel()
 {
     this->setPixmap(QPixmap::fromImage(QImage(filepath)));
     this->path = filepath;
+    this->index = anIndex;
 }
 
 Thumbnail::~Thumbnail()
@@ -30,5 +21,11 @@ QString Thumbnail::getPath()
 
 void Thumbnail::mousePressEvent(QMouseEvent *e)
 {
-    emit clicked(this->path);
+    this->setStyleSheet("border:3px solid black;");
+    emit clicked(this->index);
+}
+
+void Thumbnail::deselect()
+{
+    this->setStyleSheet("border:none");
 }

@@ -81,7 +81,7 @@ class Gui : public QWidget
         void next();
         void pelures();
         void video();
-        void showThumb(QString);
+        void showThumb(int);
         void previousFrame();
         void nextFrame();
         void showMessage();
