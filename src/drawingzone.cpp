@@ -6,6 +6,7 @@ DrawingZone::DrawingZone() :
     this->image=new QImage(800,600,QImage::Format_ARGB32_Premultiplied);
     this->prev_pos = QPoint(-666,-666);
     pen.setWidth(3);
+    this->isRubber = false;
 }
 
 DrawingZone::~DrawingZone()
@@ -46,6 +47,8 @@ void DrawingZone::mouseMoveEvent(QMouseEvent *event)
    if(this->mouseDown&&this->prev_pos.x()!=-666&&this->prev_pos.y()!=-666)
     {
         QPainter painter(this->image);
+        if(isRubber)
+            painter.setCompositionMode(QPainter::CompositionMode_Clear);
         painter.setPen(pen);
         painter.drawLine(this->prev_pos,event->pos());
         update();
@@ -70,4 +73,14 @@ void DrawingZone::undoImage()
 QImage* DrawingZone::getImage()
 {
     return this->image;
+}
+
+void DrawingZone::choosePen()
+{
+    this->isRubber = false;
+}
+
+void DrawingZone::chooseRubber()
+{
+    this->isRubber = true;
 }

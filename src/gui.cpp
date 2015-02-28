@@ -4,7 +4,6 @@
 Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
-    //this->setFixedSize(800,600);
     this->setMinimumSize(800,600);
     this->setWindowTitle("Totoscope");
     ui->setupUi(this);
@@ -169,7 +168,7 @@ Gui::Gui(Controller* aController) :
         //leftBar->setStyleSheet("QToolBar {background:lightgrey;}");
         QAction *penButton = new QAction(this);
             penButton = leftBar->addAction(QIcon("../src/pictures/pen.png"),"Crayon");
-            QObject::connect(penButton, SIGNAL(triggered()), this, SLOT(draw()));
+
         QAction *sizeButton = new QAction(this);
             QSpinBox *sizePen = new QSpinBox;
             sizePen->setRange(1,50);
@@ -177,8 +176,9 @@ Gui::Gui(Controller* aController) :
             sizeButton = leftBar->addWidget(sizePen);
             QObject::connect(sizePen, SIGNAL(valueChanged(int)), this, SLOT(setPenSize(int)));
         QAction *eraserButton = new QAction(this);
+
             eraserButton = leftBar->addAction(QIcon("../src/pictures/eraser.png"),"Gomme");
-            QObject::connect(eraserButton, SIGNAL(triggered()), this, SLOT(erase()));
+
         this->colorButton = new QAction(this);
             colButton = new QPushButton;
             colButton->setStyleSheet("background-color:black;");
@@ -195,11 +195,11 @@ Gui::Gui(Controller* aController) :
     scrollBar = new QScrollArea;
         QWidget *scrollWidget = new QWidget;
             QHBoxLayout *hblayout = new QHBoxLayout;
-            for(int i=0; i<30; i++)
+            int ind= 0;
+            QList<QPixmap*>* thumbnails = this->controller->getPictures();
+            for(int i=0;i<thumbnails->length();i++)
             {
-                QString filepath = "temp/movie"+QString::number(i)+".jpg";
-                Thumbnail *thumb = new Thumbnail(filepath,i);
-                //connect(thumb, SIGNAL(clicked(QString)), this, SLOT(showThumb(QString)));
+                Thumbnail *thumb = new Thumbnail(thumbnails->at(i),i);
                 QObject::connect(thumb,SIGNAL(clicked(int)),this,SLOT(showThumb(int)));
                 hblayout->addWidget(thumb);
             }
@@ -236,22 +236,16 @@ Gui::Gui(Controller* aController) :
     timer = new QTimer();
     timer->setInterval(500);
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
+    QObject::connect(penButton,SIGNAL(triggered()),this->drawingZone,SLOT(choosePen()));
+    QObject::connect(eraserButton,SIGNAL(triggered()),this->drawingZone,SLOT(chooseRubber()));
 }
 
-void Gui::draw()
-{
-    //TODO
-}
 
 void Gui::setPenSize(int i)
 {
     drawingZone->setPenSize(i);
 }
 
-void Gui::erase()
-{
-    //TODO efface à la taille du crayon
-}
 
 void Gui::showPicker()
 {

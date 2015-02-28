@@ -8,6 +8,7 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QUrl>
+#include <QDir>
 
 class VideoDecomposer : public QObject
 {

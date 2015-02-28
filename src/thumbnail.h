@@ -8,14 +8,13 @@
 class Thumbnail : public QLabel
 {
     Q_OBJECT
-    QString path;
+    QPixmap* pix;
     int index;
 
 public:
 
-    Thumbnail(QString, int);
+    Thumbnail(QPixmap*, int);
     ~Thumbnail();
-    QString getPath();
     void deselect();
 
 signals:

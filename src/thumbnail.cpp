@@ -1,22 +1,16 @@
 #include "thumbnail.h"
 
 
-Thumbnail::Thumbnail(QString filepath, int anIndex)
+Thumbnail::Thumbnail(QPixmap* aPix, int anIndex)
     :QLabel()
 {
-    this->setPixmap(QPixmap::fromImage(QImage(filepath)));
-    this->path = filepath;
+    this->setPixmap(*aPix);
     this->index = anIndex;
 }
 
 Thumbnail::~Thumbnail()
 {
 
-}
-
-QString Thumbnail::getPath()
-{
-    return this->path;
 }
 
 void Thumbnail::mousePressEvent(QMouseEvent *e)

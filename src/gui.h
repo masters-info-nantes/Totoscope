@@ -60,9 +60,7 @@ class Gui : public QWidget
         ~Gui();
 
     public slots:
-        void draw();
         void setPenSize(int);
-        void erase();
         void showPicker();
         void changeColor(QColor);
         void undo();

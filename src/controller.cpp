@@ -82,3 +82,8 @@ void Controller::exportVideo(QString aPath)
 {
     this->project->exportVideo(aPath);
 }
+
+QList<QPixmap*>* Controller::getPictures()
+{
+    return this->project->getPictures();
+}

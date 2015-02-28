@@ -16,11 +16,13 @@ class DrawingZone : public QWidget
     bool mouseDown;
     QImage* image;
     QImage* prev_image;
+    bool isRubber;
 
 public:
     explicit DrawingZone();
     void setPenSize(int);
     void setPenColor(QColor);
+
     void setImage(QImage*);
     void updatePrevImage();
     void undoImage();
@@ -32,6 +34,8 @@ public slots:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void choosePen();
+    void chooseRubber();
 };
 
 #endif // DRAWINGZONE_H
