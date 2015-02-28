@@ -4,7 +4,8 @@
 Thumbnail::Thumbnail(QPixmap* aPix, int anIndex)
     :QLabel()
 {
-    this->setPixmap(*aPix);
+
+    this->setPixmap((*aPix).scaledToHeight(100));
     this->index = anIndex;
 }
 

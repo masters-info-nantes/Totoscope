@@ -74,8 +74,8 @@ Project::Project(QString aPath)
     {
         QFileInfo picInfo = list1.at(i);
         QFileInfo imgInfo = list2.at(i);
-        QPixmap* pix = new QPixmap(picInfo.absoluteFilePath());
-        QImage* img = new QImage(imgInfo.absoluteFilePath());
+        QPixmap* pix = new QPixmap(imgInfo.absoluteFilePath());
+        QImage* img = new QImage(picInfo.absoluteFilePath());
         this->pictures->push_back(pix);
         this->drawings->push_back(img);
         qDebug("new image!");
@@ -171,6 +171,7 @@ QString Project::getPath()
 
 void Project::exportVideo(QString aPath)
 {
+    qDebug("Exporting...2");
     VideoRecomposer* recomposer = new VideoRecomposer(aPath,this->path,this->framerate);
     qDebug("exported!");
 }

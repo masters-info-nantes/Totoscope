@@ -8,14 +8,13 @@ Gui::Gui(Controller* aController) :
     this->setWindowTitle("Totoscope");
     ui->setupUi(this);
     QGridLayout* layout = new QGridLayout();
-   stack = new QStackedLayout();
-    QWidget* container = new QWidget();
 
     ////////////////////////////
     /// Barre Menu principal ///
     ////////////////////////////
 
     menuBar = new QMenuBar(this);
+    //menuBar->setStyleSheet("border-bottom:1px solid black;");
     QMenu *fileMenu = new QMenu;
         fileMenu = menuBar->addMenu(tr("&Fichier"));
         QAction *newAct = new QAction(this);
@@ -82,10 +81,10 @@ Gui::Gui(Controller* aController) :
             QObject::connect(redoCut, SIGNAL(activated()), this, SLOT(redo()));
             QObject::connect(redoAct, SIGNAL(triggered()), this, SLOT(redo()));
         editMenu->addSeparator();
-        QAction *oignionAct = new QAction(this);
+        oignionAct = new QAction(this);
             oignionAct = editMenu->addAction("Pelures d'Oignon");
             oignionAct->setCheckable(true);
-            QObject::connect(oignionAct, SIGNAL(triggered()), this, SLOT(pelures()));
+            QObject::connect(oignionAct, SIGNAL(triggered()), this, SLOT(updateDrawingZone()));
         vidAct = new QAction(this);
             vidAct = editMenu->addAction("Vidéo");
             vidAct->setCheckable(true);
@@ -140,7 +139,7 @@ Gui::Gui(Controller* aController) :
         QAction *oignonButton = new QAction(this);
             QCheckBox *oignonCheck = new QCheckBox("Pelures d'Oignon");
             oignonButton = topBar->addWidget(oignonCheck);
-            QObject::connect(oignonButton, SIGNAL(triggered()), this, SLOT(pelures()));
+            QObject::connect(oignonButton, SIGNAL(triggered()), this, SLOT(updateDrawingZone()));
         QAction *nbOignon = new QAction(this);
             oignonSpin = new QSpinBox;
                 oignonSpin->setRange(1,5);
@@ -150,15 +149,8 @@ Gui::Gui(Controller* aController) :
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
             QObject::connect(vidButton, SIGNAL(triggered()), this, SLOT(video()));
-    /*
-    QGridLayout *lay = new QGridLayout;
-        lay->addWidget(topBar,0,3);
-    QWidget *wid = new QWidget(this);
-        wid->setStyleSheet("{background:lightgrey;}");
-        wid->setLayout(lay);
-        wid->setMinimumSize(800,80);
-        wid->paintEvent(QPaintEvent());
-    */
+
+
     //////////////////////////////
     /// Barre verticale gauche ///
     //////////////////////////////
@@ -186,7 +178,7 @@ Gui::Gui(Controller* aController) :
             QObject::connect(colButton, SIGNAL(clicked()), this, SLOT(showPicker()));
         QAction *backButton = new QAction(this);
             backButton = leftBar->addAction(QIcon("../src/pictures/back.png"),"Annuler");
-            QObject::connect(backButton, SIGNAL(triggered()), this, SLOT(undo()));
+
 
     ///////////////////////////////
     /// Barre de défilement bas ///
@@ -194,12 +186,14 @@ Gui::Gui(Controller* aController) :
 
     scrollBar = new QScrollArea;
         QWidget *scrollWidget = new QWidget;
+        scrollBar->setFixedHeight(120);
             QHBoxLayout *hblayout = new QHBoxLayout;
             int ind= 0;
             QList<QPixmap*>* thumbnails = this->controller->getPictures();
             for(int i=0;i<thumbnails->length();i++)
             {
                 Thumbnail *thumb = new Thumbnail(thumbnails->at(i),i);
+
                 QObject::connect(thumb,SIGNAL(clicked(int)),this,SLOT(showThumb(int)));
                 hblayout->addWidget(thumb);
             }
@@ -212,32 +206,28 @@ Gui::Gui(Controller* aController) :
 
     this->drawingZone = new DrawingZone();
     this->setLayout(layout);
-    layout->addWidget(menuBar);
-    //layout->addWidget(wid,0,0,1,4);
-    layout->addWidget(topBar,0,3);
-    layout->addWidget(leftBar,1,0);
-    layout->addWidget(container,1,1,1,3);
-    layout->addWidget(scrollBar,2,0,1,4);
-    QPushButton* nextImage = new QPushButton("next image");
-    QPushButton* previousImage = new QPushButton("previous image");
+    layout->addWidget(menuBar,0,0,1,6);
+    layout->addWidget(topBar,1,3);
+    layout->addWidget(leftBar,2,0);
+    layout->addWidget(drawingZone,2,1,1,5);
+    layout->addWidget(scrollBar,3,1,1,4);
+    QPushButton* nextImage = new QPushButton(">");
+    QPushButton* previousImage = new QPushButton("<");
+    previousImage->setMaximumWidth(50);
     QObject::connect(previousImage,SIGNAL(clicked()),this,SLOT(previousFrame()));
     QObject::connect(nextImage,SIGNAL(clicked()),this,SLOT(nextFrame()));
     layout->addWidget(previousImage,3,0);
-    layout->addWidget(nextImage,3,1);
+    layout->addWidget(nextImage,3,5);
 
-    container->setLayout(stack);
-    frameWidget = new QLabel();
-    frameWidget->setPixmap(*(this->controller->getPicture()));
+    drawingZone->setVideoFrame(this->controller->getPicture());
     drawingZone->setImage(this->controller->getDrawing());
-    stack->addWidget(frameWidget);
-    stack->addWidget(drawingZone);
-    stack->setCurrentWidget(drawingZone);
-    stack->setStackingMode(QStackedLayout::StackAll);
+
     timer = new QTimer();
     timer->setInterval(500);
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
     QObject::connect(penButton,SIGNAL(triggered()),this->drawingZone,SLOT(choosePen()));
     QObject::connect(eraserButton,SIGNAL(triggered()),this->drawingZone,SLOT(chooseRubber()));
+               QObject::connect(backButton, SIGNAL(triggered()), this->drawingZone, SLOT(undoImage()));
 }
 
 
@@ -268,22 +258,30 @@ void Gui::undo()
 
 void Gui::showThumb(int index)
 {
-    this->frameWidget->setPixmap(*(this->controller->getPicture(index)));
-    this->drawingZone->setImage(this->controller->getDrawing());
+    this->controller->setFrame(index);
+    updateDrawingZone();
 }
 
 void Gui::nextFrame()
 {
     this->controller->nextFrame();
-    this->drawingZone->setImage(this->controller->getDrawing());
-    this->frameWidget->setPixmap(*(this->controller->getPicture()));
+    updateDrawingZone();
 }
 
 void Gui::previousFrame()
 {
     this->controller->previousFrame();
-    this->drawingZone->setImage(this->controller->getDrawing());
-    this->frameWidget->setPixmap(*(this->controller->getPicture()));
+    updateDrawingZone();
+}
+
+void Gui::updateDrawingZone()
+{
+    drawingZone->setVideoFrame(this->controller->getPicture());
+    drawingZone->setImage(this->controller->getDrawing());
+    if(this->oignionAct->isChecked())
+        drawingZone->showOnions(this->controller->getOnions(this->oignonSpin->value()));
+    else
+        drawingZone->hideOnions();
 }
 
 void Gui::redo()
@@ -311,7 +309,6 @@ void Gui::save()
 
 void Gui::saveAs()
 {
-    //TODO
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     this->controller->saveProject(dir+"/");
 }
@@ -332,7 +329,7 @@ void Gui::vidExport()
 
 void Gui::closeProject()
 {
-    //TODO
+    this->close();
 }
 
 void Gui::stop()
@@ -371,38 +368,19 @@ void Gui::next()
     //TODO
 }
 
-void Gui::pelures()
-{
-    QLayoutItem *item;
-    while((item = stack->takeAt(0)))
-    {
-        stack->removeItem(item);
-    }
-
-    stack->addWidget(frameWidget);
-
-    for(int i=0;i<this->oignonSpin->value();i++)
-    {
-        QImage* img = this->controller->getOnions(this->oignonSpin->value())->at(i);
-        QLabel* container = new QLabel();
-        //QPixmap* pix = new QPixmap();
-        container->setPixmap(QPixmap::fromImage(*img));
-        stack->addWidget(container);
-        qDebug("Adding onion!!");
-    }
-
-    stack->addWidget(drawingZone);
-    stack->setCurrentWidget(drawingZone);
-    stack->setStackingMode(QStackedLayout::StackAll);
-}
 
 void Gui::video()
 {
     if(vidAct->isChecked())
-        this->stack->setStackingMode(QStackedLayout::StackAll);
+        this->drawingZone->showVideo();
     else
-        this->stack->setStackingMode(QStackedLayout::StackOne);
+        this->drawingZone->hideVideo();
+}
 
+void Gui::resizeEvent()
+{
+   // this->frameWidget->resize();
+    //this->frameWidget->setPixmap(this->frameWidget->pixmap()->scaled(this->frameWidget->width(),this->frameWidget->height()));
 }
 
 void Gui::showMessage()
