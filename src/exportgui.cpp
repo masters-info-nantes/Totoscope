@@ -6,7 +6,9 @@ ExportGui::ExportGui(int i, Controller* controller)
     this->setWindowTitle(tr("Exporter..."));
 
     dirEdit = new QLineEdit();
+    dirEditVideo = new QLineEdit();
     browse = new QPushButton("Parcourir");
+    browseVideo = new QPushButton("Parcourir");
     codecBox = new QComboBox;
         codecBox->addItem("h264");
     vidEdit = new QLineEdit();
@@ -20,8 +22,8 @@ ExportGui::ExportGui(int i, Controller* controller)
     QWidget *vidPage = new QWidget;
         QGridLayout *vidLayout = new QGridLayout;
             vidLayout->addWidget(new QLabel("Emplacement :"),0,0);
-            vidLayout->addWidget(dirEdit,1,0);
-            vidLayout->addWidget(browse,1,1);
+            vidLayout->addWidget(dirEditVideo,1,0);
+            vidLayout->addWidget(browseVideo,1,1);
             vidLayout->addWidget(new QLabel("Codec :"),2,0);
             vidLayout->addWidget(codecBox,3,0);
             vidLayout->addWidget(new QLabel("Nom de la vidéo :"),4,0);

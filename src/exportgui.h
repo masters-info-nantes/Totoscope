@@ -16,6 +16,8 @@ class ExportGui : public QWidget
     Q_OBJECT
     QLineEdit* dirEdit;
     QPushButton* browse;
+    QLineEdit* dirEditVideo;
+    QPushButton* browseVideo;
     QComboBox* codecBox;
     QLineEdit* vidEdit;
     QComboBox* formatBox;
