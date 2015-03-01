@@ -33,6 +33,7 @@ public:
     void save(QString aPath);
     void save();
     void exportVideo(QString);
+    void exportImages(QString);
     QList<QImage*>* getDrawings();
     QList<QPixmap*>* getPictures();
     QString getPath();

@@ -32,6 +32,9 @@ signals:
 
 public slots:
         void exportVideo();
+        void browseImg();
+        void browseVid();
+        void exportImg();
 
 };
 

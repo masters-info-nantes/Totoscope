@@ -76,8 +76,7 @@ class Gui : public QWidget
         void playDraw();
         void pauseDraw();
         void playPause();
-        void next();
-        void video();
+        void video(bool);
         void showThumb(int);
         void previousFrame();
         void nextFrame();

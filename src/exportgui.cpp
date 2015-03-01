@@ -8,7 +8,10 @@ ExportGui::ExportGui(int i, Controller* controller)
     dirEdit = new QLineEdit();
     dirEditVideo = new QLineEdit();
     browse = new QPushButton("Parcourir");
+    QObject::connect(this->browse,SIGNAL(clicked()),this,SLOT(browseImg()));
+
     browseVideo = new QPushButton("Parcourir");
+        QObject::connect(this->browseVideo,SIGNAL(clicked()),this,SLOT(browseVid()));
     codecBox = new QComboBox;
         codecBox->addItem("h264");
     vidEdit = new QLineEdit();
@@ -16,6 +19,7 @@ ExportGui::ExportGui(int i, Controller* controller)
         formatBox->addItem(".jpg");
         formatBox->addItem(".png");
     QPushButton *cancelButton = new QPushButton("Annuler");
+    QObject::connect(cancelButton,SIGNAL(clicked()),this,SLOT(close()));
     QPushButton *exportButton = new QPushButton("Exporter");
     QObject::connect(exportButton,SIGNAL(clicked()),this,SLOT(exportVideo()));
 
@@ -58,6 +62,20 @@ ExportGui::~ExportGui()
 
 void ExportGui::exportVideo()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    this->controller->exportVideo(dir+"/");
+    this->controller->exportVideo(this->dirEditVideo->text()+"/");
+}
+
+void ExportGui::browseImg()
+{
+    this->dirEdit->setText(QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
+}
+
+void ExportGui::browseVid()
+{
+        this->dirEditVideo->setText(QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
+}
+
+void ExportGui::exportImg()
+{
+        this->controller->exportImages(this->dirEditVideo->text()+"/");
 }

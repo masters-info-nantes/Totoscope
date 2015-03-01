@@ -175,3 +175,11 @@ void Project::exportVideo(QString aPath)
     VideoRecomposer* recomposer = new VideoRecomposer(aPath,this->path,this->framerate);
     qDebug("exported!");
 }
+
+void Project::exportImages(QString aPath)
+{
+    for(int i=0; i<this->drawings->length();i++)
+    {
+        this->drawings->at(i)->save(this->path+"drawings/"+QString::number(i)+".png","PNG");
+    }
+}
