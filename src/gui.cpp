@@ -88,11 +88,11 @@ Gui::Gui(Controller* aController) :
             oignionAct = editMenu->addAction("Pelures d'Oignon");
             oignionAct->setCheckable(true);
             QObject::connect(oignionAct, SIGNAL(triggered()), this, SLOT(updateDrawingZone()));
+
         vidAct = new QAction(this);
             vidAct = editMenu->addAction("Vidéo");
             vidAct->setCheckable(true);
             vidAct->setChecked(true);
-            QObject::connect(vidAct, SIGNAL(triggered()), this, SLOT(video()));
         editMenu->addSeparator();
         QAction *playAct = new QAction(this);
             playAct = editMenu->addAction("Lecture/Pause");
@@ -110,8 +110,8 @@ Gui::Gui(Controller* aController) :
             nextAct = editMenu->addAction("Next");
             nextAct->setShortcut(QKeySequence(Qt::Key_Right));
             QShortcut *nextCut = new QShortcut(QKeySequence(Qt::Key_Right),this);
-            QObject::connect(nextCut, SIGNAL(activated()), this, SLOT(next()));
-            QObject::connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
+            QObject::connect(nextCut, SIGNAL(activated()), this, SLOT(nextFrame()));
+            QObject::connect(nextAct, SIGNAL(triggered()), this, SLOT(nextFrame()));
 
     QMenu *helpMenu = new QMenu;
         helpMenu = menuBar->addMenu(tr("&Aide"));
@@ -137,12 +137,12 @@ Gui::Gui(Controller* aController) :
             QObject::connect(pauseButton, SIGNAL(triggered()), this, SLOT(pauseDraw()));
         QAction *nextButton = new QAction(this);
             nextButton = topBar->addAction(QIcon("../src/pictures/next.png"),"Next");
-            QObject::connect(nextButton, SIGNAL(triggered()), this, SLOT(next()));
+            QObject::connect(nextButton, SIGNAL(triggered()), this, SLOT(nextFrame()));
         topBar->addSeparator();
         QAction *oignonButton = new QAction(this);
             QCheckBox *oignonCheck = new QCheckBox("Pelures d'Oignon");
             oignonButton = topBar->addWidget(oignonCheck);
-            QObject::connect(oignonButton, SIGNAL(triggered()), this, SLOT(updateDrawingZone()));
+
         QAction *nbOignon = new QAction(this);
             oignonSpin = new QSpinBox;
                 oignonSpin->setRange(1,5);
@@ -151,7 +151,6 @@ Gui::Gui(Controller* aController) :
             QCheckBox *vidCheck = new QCheckBox("Vidéo");
             vidCheck->setChecked(true);
             vidButton = topBar->addWidget(vidCheck);
-            QObject::connect(vidButton, SIGNAL(triggered()), this, SLOT(video()));
 
 
     //////////////////////////////
@@ -234,7 +233,19 @@ Gui::Gui(Controller* aController) :
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(nextFrame()));
     QObject::connect(penButton,SIGNAL(triggered()),this->drawingZone,SLOT(choosePen()));
     QObject::connect(eraserButton,SIGNAL(triggered()),this->drawingZone,SLOT(chooseRubber()));
-               QObject::connect(backButton, SIGNAL(triggered()), this->drawingZone, SLOT(undoImage()));
+    QObject::connect(backButton, SIGNAL(triggered()), this->drawingZone, SLOT(undoImage()));
+
+    QObject::connect(oignonButton, SIGNAL(triggered()), this, SLOT(updateDrawingZone()));
+    QObject::connect(oignonCheck,SIGNAL(clicked(bool)),oignionAct,SLOT(setChecked(bool)));
+    QObject::connect(oignionAct,SIGNAL(triggered(bool)),oignonCheck,SLOT(setChecked(bool)));
+
+    QObject::connect(vidCheck, SIGNAL(clicked(bool)), this, SLOT(video(bool)));
+    QObject::connect(vidButton, SIGNAL(triggered(bool)), this, SLOT(video(bool)));
+
+    QObject::connect(vidCheck,SIGNAL(clicked(bool)),vidAct,SLOT(setChecked(bool)));
+    QObject::connect(vidAct,SIGNAL(triggered(bool)),vidCheck,SLOT(setChecked(bool)));
+    QObject::connect(undoAct,SIGNAL(triggered()),this->drawingZone,SLOT(undoImage()));
+
 }
 
 
@@ -345,6 +356,8 @@ void Gui::stop()
     playButton->setVisible(true);
     pauseButton->setVisible(false);
     timer->stop();
+    this->controller->firstFrame();
+    updateDrawingZone();
 }
 
 void Gui::playDraw()
@@ -370,15 +383,10 @@ void Gui::playPause()
         pauseDraw();
 }
 
-void Gui::next()
-{
-    //TODO
-}
 
-
-void Gui::video()
+void Gui::video(bool vid)
 {
-    if(vidAct->isChecked())
+    if(vid)
         this->drawingZone->showVideo();
     else
         this->drawingZone->hideVideo();

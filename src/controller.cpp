@@ -64,6 +64,11 @@ void Controller::nextFrame()
     this->currentImageIndex++;
 }
 
+void Controller::firstFrame()
+{
+    this->currentImageIndex=0;
+}
+
 void Controller::previousFrame()
 {
     if(this->currentImageIndex>0)
@@ -87,4 +92,9 @@ void Controller::exportVideo(QString aPath)
 QList<QPixmap*>* Controller::getPictures()
 {
     return this->project->getPictures();
+}
+
+void Controller::exportImages(QString aPath)
+{
+    this->project->exportImages(aPath);
 }
