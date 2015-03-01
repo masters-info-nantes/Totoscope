@@ -4,6 +4,7 @@
 Gui::Gui(Controller* aController) :
     QWidget(0),controller(aController), ui(new Ui::Gui)
 {
+    //this->setStyleSheet("background:#3A3A3A;color:white;");
     this->setMinimumSize(800,600);
     this->setWindowTitle("Totoscope");
     ui->setupUi(this);
@@ -14,9 +15,11 @@ Gui::Gui(Controller* aController) :
     ////////////////////////////
 
     menuBar = new QMenuBar(this);
-    //menuBar->setStyleSheet("border-bottom:1px solid black;");
+    //menuBar->setStyleSheet("background:#545454;");
+    menuBar->setMinimumHeight(30);
     QMenu *fileMenu = new QMenu;
         fileMenu = menuBar->addMenu(tr("&Fichier"));
+        //fileMenu->setStyleSheet("background:#545454;");
         QAction *newAct = new QAction(this);
             newAct = fileMenu->addAction("Nouveau Projet");
             newAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -206,6 +209,7 @@ Gui::Gui(Controller* aController) :
 
     this->drawingZone = new DrawingZone();
     this->setLayout(layout);
+    //this->layout()->setMargin(0);
     layout->addWidget(menuBar,0,0,1,6);
     layout->addWidget(topBar,1,3);
     layout->addWidget(leftBar,2,0);
@@ -214,6 +218,9 @@ Gui::Gui(Controller* aController) :
     QPushButton* nextImage = new QPushButton(">");
     QPushButton* previousImage = new QPushButton("<");
     previousImage->setMaximumWidth(50);
+    previousImage->setMinimumHeight(100);
+    nextImage->setMaximumWidth(50);
+    nextImage->setMinimumHeight(100);
     QObject::connect(previousImage,SIGNAL(clicked()),this,SLOT(previousFrame()));
     QObject::connect(nextImage,SIGNAL(clicked()),this,SLOT(nextFrame()));
     layout->addWidget(previousImage,3,0);

@@ -3,19 +3,18 @@
 DrawingZone::DrawingZone() :
     QWidget(0)
 {
-    this->setStyleSheet("border:2px solid black;");
+    //this->setStyleSheet("border:2px solid black;");
 
     this->layout = new QStackedLayout();
     this->layout->setStackingMode(QStackedLayout::StackAll);
     this->setLayout(this->layout);
-    //this->image=new QImage(this->width(),this->height(),QImage::Format_ARGB32_Premultiplied);
     this->onions  = new QList<QPixmap*>();
     this->videoFrameContainer = new QLabel();
-    this->videoFrameContainer->setStyleSheet("border:10px solid green");
+    //this->videoFrameContainer->setStyleSheet("border:10px solid green");
     this->videoFrameContainer->setFixedSize(this->width(),this->height());
-    //this->layout->addWidget(this->videoFrameContainer);
+    this->layout->addWidget(this->videoFrameContainer);
     this->drawingContainer = new QLabel();
-    this->drawingContainer->setStyleSheet("border:2px solid red");
+    //this->drawingContainer->setStyleSheet("border:2px solid red");
     this->drawingContainer->setFixedSize(this->width(),this->height());
     this->layout->addWidget(this->drawingContainer);
     this->layout->setCurrentWidget(this->drawingContainer);
@@ -79,6 +78,7 @@ void DrawingZone::setImage(QImage* anImage)
 void DrawingZone::setVideoFrame(QPixmap* pix)
 {
     this->videoFrame = pix;
+    //this->videoFrameContainer = new QLabel();
     this->videoFrameContainer->setPixmap(pix->scaled(this->width(),this->height()));
 }
 
