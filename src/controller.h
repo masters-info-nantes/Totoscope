@@ -25,12 +25,13 @@ public slots:
     void saveProject(QString);
     void exportVideo(QString);
     QPixmap* getPicture();
-    QPixmap* getPicture(int);
+
     QList<QPixmap*>* getPictures();
     QList<QImage*>* getOnions(int);
     QImage* getDrawing();
     void nextFrame();
     void previousFrame();
+    void setFrame(int);
 };
 
 #endif // CONTROLLER_H

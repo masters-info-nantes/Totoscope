@@ -38,10 +38,9 @@ QPixmap* Controller::getPicture()
     return this->project->getPictures()->at(this->currentImageIndex);
 }
 
-QPixmap* Controller::getPicture(int index)
+void Controller::setFrame(int index)
 {
     this->currentImageIndex = index;
-    return this->project->getPictures()->at(this->currentImageIndex);
 }
 
 QImage* Controller::getDrawing()
@@ -52,7 +51,7 @@ QImage* Controller::getDrawing()
 QList<QImage*>* Controller::getOnions(int number)
 {
     QList<QImage*>* onion = new QList<QImage*>();
-    for(int i=this->currentImageIndex;i>0&&i>(this->currentImageIndex-number);i--)
+    for(int i=this->currentImageIndex-1;i>=0&&i>(this->currentImageIndex-number-1);i--)
     {
         onion->push_back(this->project->getDrawings()->at(i));
     }
@@ -80,6 +79,8 @@ bool Controller::isProjectSaved()
 
 void Controller::exportVideo(QString aPath)
 {
+    qDebug("Exporting...");
+    qDebug(this->project->getPath().toUtf8());
     this->project->exportVideo(aPath);
 }
 

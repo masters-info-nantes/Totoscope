@@ -31,6 +31,7 @@ SplashGui::SplashGui(Controller* aController) :
     this->layout->addWidget(this->quit,2,2);
     QObject::connect(this->openProject,SIGNAL(clicked()),this,SLOT(windowfile()));
     QObject::connect(this->newProject,SIGNAL(clicked()),this,SLOT(createproject()));
+    QObject::connect(this->quit,SIGNAL(clicked()),this,SLOT(close()));
 }
 
 void SplashGui::windowfile()
@@ -41,9 +42,10 @@ void SplashGui::windowfile()
     if(project!="")
     {
         this->controller->openProject(project);
-        this->close();
+
         Gui* win = new Gui(this->controller);
         win->show();
+         this->close();
     }
 
 }

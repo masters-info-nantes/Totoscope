@@ -38,12 +38,12 @@ class Gui : public QWidget
     Q_OBJECT
     Controller* controller;
     DrawingZone* drawingZone;
-    QLabel* frameWidget;
     QAction* playButton;
     QAction* pauseButton;
     QSpinBox *oignonSpin;
     QPushButton* colButton;
     QAction* colorButton;
+    QAction *oignionAct;
     QColorDialog* colorPalette;
     QAction* vidAct;
     QAction* vidButton;
@@ -52,7 +52,6 @@ class Gui : public QWidget
     QToolBar* topBar;
     QToolBar* leftBar;
     QScrollArea* scrollBar;
-    QStackedLayout* stack;
 
 
     public:
@@ -60,6 +59,7 @@ class Gui : public QWidget
         ~Gui();
 
     public slots:
+        void resizeEvent();
         void setPenSize(int);
         void showPicker();
         void changeColor(QColor);
@@ -77,12 +77,12 @@ class Gui : public QWidget
         void pauseDraw();
         void playPause();
         void next();
-        void pelures();
         void video();
         void showThumb(int);
         void previousFrame();
         void nextFrame();
         void showMessage();
+        void updateDrawingZone();
 
     private:
         Ui::Gui *ui;

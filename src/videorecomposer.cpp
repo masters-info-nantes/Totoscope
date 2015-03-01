@@ -12,6 +12,7 @@ VideoRecomposer::VideoRecomposer(QString vid,QString aPath,int rate)
 void VideoRecomposer::startProcessing()
 {
     QString command = "avconv -i "+this->path+"/drawings/%d.png -b:v 1000k -r "+QString::number(this->framerate)+" -y "+this->video+"/movie.mp4";
+    qDebug("Command: "+command.toUtf8());
     this->process->start(command);
     qDebug("Processing started...");
     QObject::connect(process,SIGNAL(finished(int)),this,SLOT(handleCommandEnd()));
