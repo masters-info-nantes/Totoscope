@@ -130,7 +130,9 @@ void DrawingZone::showOnions(QList<QImage*>* onions)
     {
         QLabel* lab= new QLabel();
         lab->setPixmap(QPixmap::fromImage(onions->at(i)->scaled(this->width(),this->height())));
+        lab->setWindowOpacity(1-(i*0.1));
         this->layout->addWidget(lab);
+        this->layout->setCurrentWidget(lab);
     }
     this->layout->addWidget(this->drawingContainer);
     this->layout->setCurrentWidget(this->drawingContainer);

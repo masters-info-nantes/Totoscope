@@ -1,10 +1,10 @@
 #include "exportgui.h"
 
-ExportGui::ExportGui(int i, Controller* controller)
+ExportGui::ExportGui(int i, Controller* aController)
     : QWidget(0)
 {
     this->setWindowTitle(tr("Exporter..."));
-
+    this->controller=aController;
     dirEdit = new QLineEdit();
     dirEditVideo = new QLineEdit();
     browse = new QPushButton("Parcourir");
@@ -62,7 +62,7 @@ ExportGui::~ExportGui()
 
 void ExportGui::exportVideo()
 {
-    this->controller->exportVideo(this->dirEditVideo->text()+"/");
+    this->controller->exportVideo(this->dirEditVideo->text());
 }
 
 void ExportGui::browseImg()
@@ -77,5 +77,5 @@ void ExportGui::browseVid()
 
 void ExportGui::exportImg()
 {
-        this->controller->exportImages(this->dirEditVideo->text()+"/");
+        this->controller->exportImages(this->dirEdit->text()+"/");
 }

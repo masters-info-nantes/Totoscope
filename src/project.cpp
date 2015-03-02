@@ -173,6 +173,7 @@ void Project::exportVideo(QString aPath)
 {
     qDebug("Exporting...2");
     VideoRecomposer* recomposer = new VideoRecomposer(aPath,this->path,this->framerate);
+    recomposer->startProcessing();
     qDebug("exported!");
 }
 

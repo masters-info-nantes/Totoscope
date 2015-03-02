@@ -3,7 +3,7 @@
 NewProjectGui::NewProjectGui(Controller* aController) :
     QWidget(0),controller(aController)
 {
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    //QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
     this->setWindowTitle("Nouveau Projet");
     this->setStyleSheet("background:#545454;color:white;");
     layout = new QGridLayout();
